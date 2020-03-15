@@ -2,6 +2,7 @@ package com.lavaira.checklistapp.di.modules
 
 import com.lavaira.checklistapp.data.remote.Api
 import com.lavaira.checklistapp.repository.NewsRepository
+import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.schedulers.SchedulerContract
 import com.lavaira.checklistapp.schedulers.SchedulerProvider
 import dagger.Module
@@ -31,6 +32,14 @@ class AppModule {
     fun provideUserkRepository(api: Api, scheduler: SchedulerContract): NewsRepository {
         return NewsRepository(api, scheduler)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: Api, scheduler: SchedulerContract): UserRepository {
+        return UserRepository(api, scheduler)
+    }
+
 
     @Provides
     @Singleton

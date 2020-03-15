@@ -1,6 +1,7 @@
 package com.lavaira.checklistapp.common
 
 import android.content.res.Resources
+import android.view.View
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
@@ -26,5 +27,14 @@ object BindingAdapters {
                 }
             }
         }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("progress_visibility")
+    fun setProgressBarVisibility(view: View, visibility: Boolean?) {
+        visibility?.let {
+            view.visibility = if (it) View.VISIBLE else View.GONE
+        } ?: run { view.visibility = View.GONE }
     }
 }

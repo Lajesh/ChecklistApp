@@ -2,7 +2,7 @@ package com.lavaira.checklistapp.repository
 
 import com.lavaira.checklistapp.data.remote.Api
 import com.lavaira.checklistapp.data.remote.model.NewsListResponse
-import com.lavaira.checklistapp.data.remote.response.ResponseListener
+import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
 import com.lavaira.checklistapp.schedulers.SchedulerContract
 import javax.inject.Inject
 

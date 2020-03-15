@@ -1,6 +1,7 @@
 package com.lavaira.checklistapp.di.modules
 
-import com.lavaira.checklistapp.view.activity.MainActivity
+import com.lavaira.checklistapp.view.activity.DashboardActivity
+import com.lavaira.checklistapp.view.activity.PreLoginActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -14,5 +15,8 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeMainActivity(): PreLoginActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun contributeDashboardActivity(): DashboardActivity
 }

@@ -19,6 +19,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="-7dp"
+                android:background="@color/color_white"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorIndigo"
+                app:progress_visibility="@{viewModel.loadingStatus}" />
+
             <TextView
                 android:id="@+id/tvRegisrationTitle"
                 android:layout_width="match_parent"

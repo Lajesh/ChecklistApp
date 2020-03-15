@@ -8,5 +8,6 @@ package com.lavaira.checklistapp.common
  *****/
 object JsonKeyConstants{
     // Keep Json Keyconstants here
+    const val PARAM_KEY = "key"
 
 }

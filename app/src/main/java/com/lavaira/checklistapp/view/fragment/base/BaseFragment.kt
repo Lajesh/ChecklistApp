@@ -13,12 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.di.Injectable
 import com.lavaira.checklistapp.view.activity.base.BaseActivity
 import com.lavaira.checklistapp.view.listeners.BackButtonHandlerListener
 import com.lavaira.checklistapp.view.listeners.BackPressListener
+import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -56,6 +58,9 @@ abstract class BaseFragment<V : ViewModel, D : ViewDataBinding> : androidx.fragm
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(getViewModel())
+        (viewModel as BaseViewModel).serviceErrorEvent.observe(this, Observer {
+            showErrorDialog(it)
+        })
 
     }
 

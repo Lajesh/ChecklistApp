@@ -1,8 +1,8 @@
 package com.lavaira.checklistapp.repository
 
-import com.lavaira.checklistapp.data.remote.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.response.ResponseListener
-import com.lavaira.checklistapp.data.remote.response.ResponseStatus
+import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
+import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
+import com.lavaira.checklistapp.data.remote.model.response.ResponseStatus
 import com.lavaira.checklistapp.schedulers.SchedulerContract
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable

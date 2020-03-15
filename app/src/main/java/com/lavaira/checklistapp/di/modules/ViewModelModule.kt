@@ -7,6 +7,7 @@ import com.lavaira.checklistapp.di.key.ViewModelKey
 import com.lavaira.checklistapp.view.fragment.landing.LandingViewModel
 import com.lavaira.checklistapp.view.fragment.news.NewsListViewModel
 import com.lavaira.checklistapp.view.fragment.registration.RegistrationViewModel
+import com.lavaira.checklistapp.viewmodel.EmptyViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -35,6 +36,12 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(RegistrationViewModel::class)
     fun bindRegistrationViewModel(registrationViewModel: RegistrationViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EmptyViewModel::class)
+    fun bindEmptyViewModel(emptyViewModel: EmptyViewModel): ViewModel
 
     @Binds
     fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

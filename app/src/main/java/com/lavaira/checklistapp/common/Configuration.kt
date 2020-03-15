@@ -21,13 +21,16 @@ object Configuration {
     @DeploymentType
     private val defaultEnvironment = DEV
 
-    const val API_KEY = "5Z4MVs7Y1WNAYyA79RE9tpR6s3WQjLie"
+    const val API_KEY = "AIzaSyBnVtRwKKCLQ1D_lSEd9bI4ynX1UqF_WSc"
+
+
+    const val AUTH_ENDPOINT = "https://identitytoolkit.googleapis.com/v1/accounts=$API_KEY"
 
 
     // HOST Urls
     private const val URL_SIT = "" //Put the SIT url here
 
-    private const val URL_DEV = "https://api.nytimes.com/" // Put the development url here
+    private const val URL_DEV = "https://identitytoolkit.googleapis.com/v1/" // Put the development url here
 
     private const val URL_PROD = "" // Put the production url here
 

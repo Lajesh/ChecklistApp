@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
-import com.newyorktimes.newsapp.BuildConfig
 import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.di.modules.NetworkModule
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -43,7 +42,6 @@ import retrofit2.Retrofit
     Handler::class,
     Looper::class,
     TextUtils::class,
-    BuildConfig::class,
     ChecklistApplication::class
 )
 abstract class BaseUnitTest {

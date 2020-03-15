@@ -7,11 +7,10 @@ import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.data.remote.model.NewsListResponse
-import com.lavaira.checklistapp.data.remote.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.response.ResponseListener
+import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
+import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
 import com.lavaira.checklistapp.listeners.OnItemClickListener
 import com.lavaira.checklistapp.repository.NewsRepository
-import com.lavaira.checklistapp.view.fragment.news.NewsItemViewModel
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject

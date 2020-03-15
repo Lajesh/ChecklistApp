@@ -2,7 +2,14 @@ package com.lavaira.checklistapp.view.fragment.registration
 
 import androidx.lifecycle.MutableLiveData
 import com.lavaira.checklistapp.R
+import com.lavaira.checklistapp.architecture.SingleLiveEvent
+import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.common.Constants.PW_LENGTH
+import com.lavaira.checklistapp.data.remote.model.request.register.RegistrationRequest
+import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
+import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
+import com.lavaira.checklistapp.data.remote.model.response.registration.RegistrationResponse
+import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.utils.Validator
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import javax.inject.Inject
@@ -14,7 +21,7 @@ import javax.inject.Inject
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/
-class RegistrationViewModel @Inject constructor(): BaseViewModel() {
+class RegistrationViewModel @Inject constructor(private val userRepository: UserRepository): BaseViewModel() {
 
     val firstNameField = MutableLiveData<String>()
     val emailField = MutableLiveData<String>()
@@ -26,9 +33,11 @@ class RegistrationViewModel @Inject constructor(): BaseViewModel() {
     val passwordFieldErrorValue = MutableLiveData<Int>()
     val confirmPasswordFieldErrorValue = MutableLiveData<Int>()
 
+    val signupCompletedEvent = SingleLiveEvent<Void>()
 
 
-    fun validateFirstName(): Boolean {
+
+    private fun validateFirstName(): Boolean {
         return if(firstNameField.value.isNullOrEmpty()){
             firstNameFieldErrorValue.value = R.string.error_msg_invalid_firstname
             false
@@ -42,7 +51,7 @@ class RegistrationViewModel @Inject constructor(): BaseViewModel() {
     /**
      * validating Email
      */
-    fun validateEmail(): Boolean {
+    private fun validateEmail(): Boolean {
 
         return if (emailField.value.isNullOrEmpty() || !Validator.isValidEmail(emailField.value.toString())) {
             emailFieldErrorValue.value = R.string.error_msg_invalid_email
@@ -56,7 +65,7 @@ class RegistrationViewModel @Inject constructor(): BaseViewModel() {
     /**
      * validating password field value
      */
-    fun validatePassword(): Boolean {
+    private fun validatePassword(): Boolean {
         return if (passwordField.value.isNullOrEmpty()) {
             passwordFieldErrorValue.value = R.string.error_msg_pw_cant_empty
             false
@@ -114,7 +123,7 @@ class RegistrationViewModel @Inject constructor(): BaseViewModel() {
     /**
      * All fields validation
      */
-    fun isAllFieldsValid(): Boolean {
+    private fun isAllFieldsValid(): Boolean {
 
         var isMatchPassword = false
         val isValidEmail = validateEmail()
@@ -132,8 +141,38 @@ class RegistrationViewModel @Inject constructor(): BaseViewModel() {
     }
 
 
-    fun doSignup(){
-        isAllFieldsValid()
+    /**
+     * Service call to perform the signup operation
+     */
+    fun doSignup() {
+        if (isAllFieldsValid()) {
+            userRepository.registerUser(
+                RegistrationRequest(
+                    emailField.value!!,
+                    passwordField.value!!,
+                    true
+                ), object : ResponseListener<RegistrationResponse> {
+                    override fun onStart() {
+                        loadingStatus.value = true
+                    }
+
+                    override fun onFinish() {
+                        loadingStatus.value = false
+                    }
+
+                    override fun onResponse(result: ApiResponse<RegistrationResponse>) {
+                        loadingStatus.value = false
+                        if (result.error != null) {
+                            serviceErrorEvent.value = result.errorDescription
+                        } else {
+                            AppSession.idToken = result.data?.idToken
+                            AppSession.localId = result.data?.localId
+                            signupCompletedEvent.call()
+                        }
+                    }
+
+                })
+        }
     }
 
 
