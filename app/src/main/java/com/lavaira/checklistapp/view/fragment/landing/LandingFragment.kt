@@ -1,11 +1,6 @@
 package com.lavaira.checklistapp.view.fragment.landing
 
-import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.lifecycle.Observer
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
@@ -13,8 +8,7 @@ import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.databinding.FragmentLandingBinding
 import com.lavaira.checklistapp.utils.FragmentUtils
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
-import com.lavaira.checklistapp.view.fragment.registration.RegistrationFragment
-import kotlinx.android.synthetic.main.fragment_landing.*
+import com.lavaira.checklistapp.view.fragment.registration.VerifyOtpFragment
 
 
 /****
@@ -41,17 +35,10 @@ class LandingFragment : BaseFragment<LandingViewModel, FragmentLandingBinding>()
        return ""
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val content = SpannableString(getString(R.string.landing_screen_register))
-        content.setSpan(UnderlineSpan(), 0, content.length, 0)
-        tvRegister.text = content
-    }
-
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.registrationEvent.observe(this, Observer{
-            FragmentUtils.replaceFragment(activity as AppCompatActivity, RegistrationFragment(), R.id.fragmentContainer,
+            FragmentUtils.replaceFragment(activity as AppCompatActivity, VerifyOtpFragment(), R.id.fragmentContainer,
                 true, FragmentUtils.FragmentAnimation.TRANSITION_SLIDE_LEFT_RIGHT)
 
         })

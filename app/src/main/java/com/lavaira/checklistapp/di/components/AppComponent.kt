@@ -2,10 +2,7 @@ package com.lavaira.checklistapp.di.components
 
 import android.app.Application
 import com.lavaira.checklistapp.ChecklistApplication
-import com.lavaira.checklistapp.di.modules.ActivityBuilderModule
-import com.lavaira.checklistapp.di.modules.AppModule
-import com.lavaira.checklistapp.di.modules.NetworkModule
-import com.lavaira.checklistapp.di.modules.UrlModule
+import com.lavaira.checklistapp.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -24,6 +21,7 @@ import javax.inject.Singleton
         AppModule::class,
         NetworkModule::class,
         UrlModule::class,
+        FirebaseAuthModule::class,
         ActivityBuilderModule::class]
 )
 interface AppComponent {

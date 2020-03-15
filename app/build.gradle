@@ -152,6 +152,10 @@ dependencies {
 
     // Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+
+    // OTP View
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
 
     // Custom chrome tabs
     implementation 'androidx.browser:browser:1.2.0'

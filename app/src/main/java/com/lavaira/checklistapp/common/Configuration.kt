@@ -30,7 +30,7 @@ object Configuration {
     // HOST Urls
     private const val URL_SIT = "" //Put the SIT url here
 
-    private const val URL_DEV = "https://identitytoolkit.googleapis.com/v1/" // Put the development url here
+    private const val URL_DEV = "https://checklistapp-b0556.firebaseio.com/" // Put the development url here
 
     private const val URL_PROD = "" // Put the production url here
 

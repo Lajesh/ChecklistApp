@@ -1,6 +1,9 @@
 package com.lavaira.checklistapp.di.modules
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthProvider
 import com.lavaira.checklistapp.data.remote.Api
+import com.lavaira.checklistapp.repository.AuthRepository
 import com.lavaira.checklistapp.repository.NewsRepository
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.schedulers.SchedulerContract
@@ -38,6 +41,13 @@ class AppModule {
     @Singleton
     fun provideUserRepository(api: Api, scheduler: SchedulerContract): UserRepository {
         return UserRepository(api, scheduler)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(auth: FirebaseAuth, phoneAuthProvider: PhoneAuthProvider) : AuthRepository{
+        return AuthRepository(auth, phoneAuthProvider)
     }
 
 

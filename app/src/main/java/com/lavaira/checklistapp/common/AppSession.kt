@@ -1,5 +1,8 @@
 package com.lavaira.checklistapp.common
 
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthProvider
+
 /****
  * Application session class
  * Author: Lajesh Dineshkumar
@@ -10,4 +13,8 @@ package com.lavaira.checklistapp.common
 object AppSession {
     var idToken: String? = ""
     var localId: String? = ""
+    var verificationCode: String? = ""
+    var phoneNumber: String = ""
+    var resendToken: PhoneAuthProvider.ForceResendingToken? = null
+    var user: FirebaseUser? = null
 }
