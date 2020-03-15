@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.lavaira.checklistapp.view.fragment.registration.RegistrationViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRegisrationTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_18sdp"
+                android:gravity="center"
+                android:text="@string/register_screen_create_account"
+                android:textColor="@color/colorDarkBlue"
+                android:textSize="@dimen/_22ssp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRegisrationTitle"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_35sdp"
+                field_error="@{viewModel.firstNameFieldErrorValue}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_screen_fullname"
+                    android:inputType="text"
+                    android:text="@={viewModel.firstNameField}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipEmail"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tipName"
+                field_error="@{viewModel.emailFieldErrorValue}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_screen_email"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.emailField}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipPassword"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tipEmail"
+                app:passwordToggleEnabled="true"
+                field_error="@{viewModel.passwordFieldErrorValue}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_screen_password"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.passwordField}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipConfirmPassword"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tipPassword"
+                app:passwordToggleEnabled="true"
+                field_error="@{viewModel.confirmPasswordFieldErrorValue}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_screen_confirm_password"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.confirmPasswordField}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btnLgoin"
+                style="@style/BlueButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tipConfirmPassword"
+                android:text="@string/register_screen_signup"
+                android:onClick="@{()->viewModel.doSignup()}"/>
+
+            <TextView
+                android:id="@+id/tvTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnLgoin"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_35sdp"
+                android:text="@string/register_screen_terms" />
+
+
+            <Button
+                android:id="@+id/btnSignupFB"
+                style="@style/FBButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTerms"
+                android:text="@string/register_screen_signup_fb" />
+
+            <Button
+                android:id="@+id/btnSignupGoogle"
+                style="@style/GoogleButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnSignupFB"
+                android:text="@string/register_screen_signup_google" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</layout>

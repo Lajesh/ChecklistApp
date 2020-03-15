@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.lavaira.checklistapp.view.fragment.landing.LandingViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/ivBgImage"
+            android:layout_width="match_parent"
+            android:layout_marginTop="-15dp"
+            android:layout_height="@dimen/_250sdp"
+            android:src="@drawable/bg_landing2" />
+
+
+        <TextView android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_22ssp"
+            fontPath="fonts/Poppins-Bold.ttf"
+            android:text="@string/landing_screen_title"
+            android:layout_below="@id/ivBgImage"
+            android:layout_margin="@dimen/_15sdp"
+            android:textStyle="bold"/>
+
+
+        <TextView android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:textSize="@dimen/_16ssp"
+            android:text="@string/landing_screen_subtitle"
+            android:layout_margin="@dimen/_15sdp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:orientation="vertical">
+
+            <Button android:id="@+id/btnLgoin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_rounded_corner"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/landing_screen_login"
+                android:textColor="@color/color_white"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_35sdp"/>
+
+            <TextView android:id="@+id/tvRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/landing_screen_register"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.doRegister()}"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginTop="@dimen/_15sdp"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+</layout>
