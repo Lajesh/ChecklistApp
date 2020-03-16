@@ -12,7 +12,6 @@ import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 /****
  * Registration Fragment
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/

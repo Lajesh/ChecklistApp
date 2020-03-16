@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NYTimesApp</string>
+    <string name="app_name">ChecklistApp</string>
     <string name="article_icon">Article Icon</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>

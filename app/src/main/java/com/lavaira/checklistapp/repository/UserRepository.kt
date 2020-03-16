@@ -14,23 +14,11 @@ import javax.inject.Inject
 /****
  *  User Repository which keeps all the service calls related to User entity
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/
 class UserRepository @Inject constructor(private val api: Api)
     :  SafeLet{
-
-
-
-//    fun saveUserProfile(registrationRequest: RegistrationRequest, responseListener: ResponseListener<RegistrationResponse>){
-//
-//        safeLet(AppSession.user?.uid, AppSession.idToken){
-//                uid, token -> performRequest(api.register("$uid.json", token, registrationRequest.params()), responseListener)
-//        }
-//
-//    }
-
 
     fun saveUserProfile(registrationRequest: RegistrationRequest) : LiveData<Resource<RegistrationResponse>> {
             return object : NetworkResource<RegistrationResponse>() {

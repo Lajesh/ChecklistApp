@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.fragment_verify_otp.*
 /****
  * Verification Fragment
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/

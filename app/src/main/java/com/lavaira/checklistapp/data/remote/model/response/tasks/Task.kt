@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
 /****
  * Model for representing a user task
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-16
  * Modified on: 2020-03-16
  *****/

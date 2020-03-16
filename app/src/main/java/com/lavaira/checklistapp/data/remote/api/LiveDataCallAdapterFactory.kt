@@ -7,9 +7,8 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /****
- * File Description
+ * LiveDataCallAdapterFactory
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-16
  * Modified on: 2020-03-16
  *****/

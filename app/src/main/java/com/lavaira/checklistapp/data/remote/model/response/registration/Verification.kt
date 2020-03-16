@@ -5,7 +5,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 /****
  * Model fro Verification code
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/

@@ -8,9 +8,8 @@ import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
 
 /****
- * File Description
+ * Keep all common binding adapters here
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/

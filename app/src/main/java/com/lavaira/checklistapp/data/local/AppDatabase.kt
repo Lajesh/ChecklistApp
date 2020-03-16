@@ -9,7 +9,6 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
  * App Database
  * Define all entities and access doa's here/ Each entity is a table.
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-16
  * Modified on: 2020-03-16
  *****/

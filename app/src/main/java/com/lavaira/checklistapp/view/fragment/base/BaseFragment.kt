@@ -1,19 +1,18 @@
 package com.lavaira.checklistapp.view.fragment.base
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import android.os.Bundle
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.FragmentActivity
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.di.Injectable
