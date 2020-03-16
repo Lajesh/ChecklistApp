@@ -8,8 +8,6 @@ import java.io.InputStream
 /****
  * Mock Response builder
  * Author: Lajesh Dineshkumar
- * Created on: 2019-12-19
- * Modified on: 2019-12-19
  *****/
 object MockResponse {
 

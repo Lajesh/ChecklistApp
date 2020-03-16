@@ -36,6 +36,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel, FragmentRegistr
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.signupCompletedEvent.observe(this, Observer{
+            activity?.finish()
             val dashboardIntent = Intent(activity, DashboardActivity::class.java)
             startActivity(dashboardIntent)
         })

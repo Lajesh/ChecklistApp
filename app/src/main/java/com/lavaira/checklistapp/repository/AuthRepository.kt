@@ -1,15 +1,14 @@
 package com.lavaira.checklistapp.repository
 
-import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
-import com.lavaira.checklistapp.data.remote.model.response.ResponseStatus
+import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.ResponseListener
+import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -43,18 +42,36 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
                 override fun onVerificationFailed(p0: FirebaseException) {
                     Timber.i("Verification failed${p0.message}")
-                    responseListener.onResponse(ApiResponse(ResponseStatus.FAILURE, null, Throwable(p0.message)))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.FAILURE,
+                            null,
+                            Throwable(p0.message)
+                        )
+                    )
                 }
 
                 override fun onCodeSent(verificationCode: String, resendToken: PhoneAuthProvider.ForceResendingToken) {
                     super.onCodeSent(verificationCode, resendToken)
                     Timber.i("Code Sent successfully")
-                    responseListener.onResponse(ApiResponse(ResponseStatus.SUCCESS, Verification(verificationCode, resendToken), null))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.SUCCESS,
+                            Verification(verificationCode, resendToken),
+                            null
+                        )
+                    )
                 }
 
             })
     }
 
+    /**
+     * Service call to resend the verification code
+     * @param phoneNumber: Mobile Number
+     * @param token: ForceResending Token
+     * @param responseListener: Response Listener callback
+     */
     fun resendVerificationCode(phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken, responseListener: ResponseListener<Verification>){
         responseListener.onStart()
         phoneAuthProvider.verifyPhoneNumber(
@@ -66,13 +83,25 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
 
                 override fun onVerificationFailed(p0: FirebaseException) {
                     Timber.i("Verification failed${p0.message}")
-                    responseListener.onResponse(ApiResponse(ResponseStatus.FAILURE, null, Throwable(p0.message)))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.FAILURE,
+                            null,
+                            Throwable(p0.message)
+                        )
+                    )
                 }
 
                 override fun onCodeSent(verificationCode: String, resendToken: PhoneAuthProvider.ForceResendingToken) {
                     super.onCodeSent(verificationCode, resendToken)
                     Timber.i("Code Sent successfully")
-                    responseListener.onResponse(ApiResponse(ResponseStatus.SUCCESS, Verification(verificationCode, resendToken), null))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.SUCCESS,
+                            Verification(verificationCode, resendToken),
+                            null
+                        )
+                    )
                 }
 
             }, token)
@@ -90,10 +119,50 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth,
         firebaseAuth.signInWithCredential(PhoneAuthProvider.getCredential(verificationId, otp))
             .addOnCompleteListener {
                 if(it.isSuccessful){
-                    responseListener.onResponse(ApiResponse(ResponseStatus.SUCCESS, it.result?.user, null))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.SUCCESS,
+                            it.result?.user,
+                            null
+                        )
+                    )
                 }else{
-                    responseListener.onResponse(ApiResponse(ResponseStatus.FAILURE, null, Throwable(it.exception?.message)))
+                    responseListener.onResponse(
+                        ApiResponse(
+                            ResponseStatus.FAILURE,
+                            null,
+                            Throwable(it.exception?.message)
+                        )
+                    )
                 }
             }
+    }
+
+
+    /**
+     * Service call to get the identity token of the user
+     * @param responseListener : ResponseListener callback
+     */
+    fun getIdentityToken( responseListener: ResponseListener<String>){
+        responseListener.onStart()
+        firebaseAuth.currentUser?.getIdToken(true)?.addOnCompleteListener{
+            if(it.isSuccessful){
+                responseListener.onResponse(
+                    ApiResponse(
+                        ResponseStatus.SUCCESS,
+                        it.result?.token,
+                        null
+                    )
+                )
+            }else{
+                responseListener.onResponse(
+                    ApiResponse(
+                        ResponseStatus.FAILURE,
+                        null,
+                        Throwable(it.exception?.message)
+                    )
+                )
+            }
+        }
     }
 }

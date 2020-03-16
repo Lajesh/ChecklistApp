@@ -6,7 +6,7 @@
 
         <variable
                 name="viewModel"
-                type="com.lavaira.checklistapp.view.fragment.news.NewsListViewModel"/>
+                type="com.lavaira.checklistapp.viewmodel.EmptyViewModel"/>
     </data>
 
     <LinearLayout

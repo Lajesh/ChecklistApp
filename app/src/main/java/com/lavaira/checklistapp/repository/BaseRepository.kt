@@ -1,8 +1,8 @@
 package com.lavaira.checklistapp.repository
 
-import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
-import com.lavaira.checklistapp.data.remote.model.response.ResponseStatus
+import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.ResponseListener
+import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.schedulers.SchedulerContract
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -26,8 +26,20 @@ open class BaseRepository (val scheduler: SchedulerContract){
             .observeOn(scheduler.ui())
             .doOnSubscribe { responseListener.onStart() }
             .doAfterTerminate { responseListener.onFinish() }
-            .subscribe({ result: T -> responseListener.onResponse(ApiResponse(ResponseStatus.SUCCESS, result, null)) },
-                { error: Throwable? -> responseListener.onResponse(ApiResponse(ResponseStatus.FAILURE, null, error)) })
+            .subscribe({ result: T -> responseListener.onResponse(
+                ApiResponse(
+                    ResponseStatus.SUCCESS,
+                    result,
+                    null
+                )
+            ) },
+                { error: Throwable? -> responseListener.onResponse(
+                    ApiResponse(
+                        ResponseStatus.FAILURE,
+                        null,
+                        error
+                    )
+                ) })
 
     }
 

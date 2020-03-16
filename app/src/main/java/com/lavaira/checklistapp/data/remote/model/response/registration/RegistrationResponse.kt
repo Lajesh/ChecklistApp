@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
  *****/
+
 data class RegistrationResponse(
     @SerializedName("email") val email: String? = "",
     @SerializedName("localId") val localId: String? = "",

@@ -1,10 +1,14 @@
 package com.lavaira.checklistapp.di.modules
 
+import android.content.Context
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
-import com.lavaira.checklistapp.data.remote.Api
+import com.lavaira.checklistapp.ChecklistApplication
+import com.lavaira.checklistapp.data.local.AppDatabase
+import com.lavaira.checklistapp.data.local.dao.TasksDao
+import com.lavaira.checklistapp.data.remote.api.Api
 import com.lavaira.checklistapp.repository.AuthRepository
-import com.lavaira.checklistapp.repository.NewsRepository
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.schedulers.SchedulerContract
 import com.lavaira.checklistapp.schedulers.SchedulerProvider
@@ -29,14 +33,6 @@ class AppModule {
         return retrofit.create(Api::class.java)
     }
 
-
-    @Provides
-    @Singleton
-    fun provideUserkRepository(api: Api, scheduler: SchedulerContract): NewsRepository {
-        return NewsRepository(api, scheduler)
-    }
-
-
     @Provides
     @Singleton
     fun provideUserRepository(api: Api, scheduler: SchedulerContract): UserRepository {
@@ -56,4 +52,34 @@ class AppModule {
     fun provideScheduler(): SchedulerContract {
         return SchedulerProvider()
     }
+
+    /**
+     * Provides app AppDatabase
+     */
+    @Singleton
+    @Provides
+    fun provideDb(context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "checklists-db").build()
+    }
+
+
+    /**
+     * Provides NewsArticlesDao an object to access NewsArticles table from Database
+     */
+    @Singleton
+    @Provides
+    fun provideUserDao(db: AppDatabase): TasksDao {
+        return db.tasksDao()
+    }
+
+
+    /**
+     * Application application level context.
+     */
+    @Singleton
+    @Provides
+    fun provideContext(application: ChecklistApplication): Context {
+        return application.applicationContext
+    }
+
 }

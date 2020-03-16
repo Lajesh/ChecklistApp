@@ -4,12 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
-import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
-import com.lavaira.checklistapp.data.remote.model.response.ResponseStatus
+import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.ResponseListener
+import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
 import com.lavaira.checklistapp.repository.AuthRepository
-import com.lavaira.checklistapp.utils.Validator
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import javax.inject.Inject
 
@@ -31,7 +30,8 @@ class LandingViewModel @Inject constructor(private val authRepository: AuthRepos
     fun doRegister(){
         if(validateMobileNumber()) {
             AppSession.phoneNumber = "+971"+phoneNumberField.value?.substring(1)
-            authRepository.sendVerificationCode(AppSession.phoneNumber, object : ResponseListener<Verification>{
+            authRepository.sendVerificationCode(AppSession.phoneNumber!!, object :
+                ResponseListener<Verification> {
                 override fun onStart() {
                     loadingStatus.value = true
                 }

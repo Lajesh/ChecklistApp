@@ -1,7 +1,6 @@
 package com.lavaira.checklistapp.di.modules
 
 import com.lavaira.checklistapp.view.fragment.landing.LandingFragment
-import com.lavaira.checklistapp.view.fragment.news.NewsListFragment
 import com.lavaira.checklistapp.view.fragment.registration.RegistrationFragment
 import com.lavaira.checklistapp.view.fragment.registration.VerifyOtpFragment
 import dagger.Module
@@ -16,8 +15,6 @@ import dagger.android.ContributesAndroidInjector
 @Suppress("unused")
 @Module
 abstract class FragmentBuilderModule {
-    @ContributesAndroidInjector
-    abstract fun contributeNewsListFragment(): NewsListFragment
 
     @ContributesAndroidInjector
     abstract fun contributeLandingFragment(): LandingFragment

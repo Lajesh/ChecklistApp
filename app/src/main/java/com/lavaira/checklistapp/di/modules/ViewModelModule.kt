@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.lavaira.checklistapp.architecture.ViewModelFactory
 import com.lavaira.checklistapp.di.key.ViewModelKey
 import com.lavaira.checklistapp.view.fragment.landing.LandingViewModel
-import com.lavaira.checklistapp.view.fragment.news.NewsListViewModel
 import com.lavaira.checklistapp.view.fragment.registration.RegistrationViewModel
 import com.lavaira.checklistapp.view.fragment.registration.VerificationViewModel
 import com.lavaira.checklistapp.viewmodel.EmptyViewModel
@@ -22,10 +21,6 @@ import dagger.multibindings.IntoMap
 @Module
 interface ViewModelModule {
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(NewsListViewModel::class)
-    fun bindNewsListViewModel(newsListViewModel: NewsListViewModel): ViewModel
 
     @Binds
     @IntoMap

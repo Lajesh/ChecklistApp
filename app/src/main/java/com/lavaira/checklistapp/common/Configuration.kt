@@ -28,13 +28,13 @@ object Configuration {
 
 
     // HOST Urls
-    private const val URL_SIT = "" //Put the SIT url here
+    private const val URL_SIT = "https://checklistapp-b0556.firebaseio.com/" //Put the SIT url here
 
     private const val URL_DEV = "https://checklistapp-b0556.firebaseio.com/" // Put the development url here
 
-    private const val URL_PROD = "" // Put the production url here
+    private const val URL_PROD = "https://checklistapp-b0556.firebaseio.com/" // Put the production url here
 
-    private const val URL_UAT = "" // Put the UAT url here
+    private const val URL_UAT = "https://checklistapp-b0556.firebaseio.com/" // Put the UAT url here
 
     val baseURL: String
         get() {

@@ -32,8 +32,6 @@ import retrofit2.Retrofit
  * All the  initial mocks required for enabling unit testing are done in this class.
  * The class will be using Mockito and PowerMock for mocking purposes
  * Author: Lajesh Dineshkumar
- * Created on: 2019-12-19
- * Modified on: 2019-12-19
  *****/
 @RunWith(PowerMockRunner::class)
 @PowerMockIgnore("javax.net.ssl.*")

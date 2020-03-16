@@ -2,6 +2,7 @@ package com.lavaira.checklistapp.common
 
 import android.content.res.Resources
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
@@ -22,6 +23,20 @@ object BindingAdapters {
             if (resourse != -1) {
                 try {
                     editText.error = editText.context.getString(resourse)
+                } catch (e: Resources.NotFoundException) {
+                    Timber.e(e)
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("error")
+    fun setError(textView: TextView, resourse: Int?) {
+        resourse?.let {
+            if (resourse != -1) {
+                try {
+                    textView.text = textView.context.getString(resourse)
                 } catch (e: Resources.NotFoundException) {
                     Timber.e(e)
                 }

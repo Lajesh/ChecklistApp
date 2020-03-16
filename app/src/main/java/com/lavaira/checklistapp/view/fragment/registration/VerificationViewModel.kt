@@ -5,11 +5,12 @@ import com.google.firebase.auth.FirebaseUser
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
-import com.lavaira.checklistapp.data.remote.model.response.ApiResponse
-import com.lavaira.checklistapp.data.remote.model.response.ResponseListener
-import com.lavaira.checklistapp.data.remote.model.response.ResponseStatus
+import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.ResponseListener
+import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
 import com.lavaira.checklistapp.repository.AuthRepository
+import com.lavaira.checklistapp.utils.SafeLet
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ import javax.inject.Inject
  * Modified on: 2020-03-15
  *****/
 class VerificationViewModel @Inject constructor(private val authRepository: AuthRepository)
-    :BaseViewModel() {
+    :BaseViewModel(), SafeLet {
 
     val otp = MutableLiveData<String>()
     val otpFieldErrorValue = MutableLiveData<Int>()
@@ -29,10 +30,49 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
     val resendOtpEvent = SingleLiveEvent<Void>()
 
 
-    fun validateOtp(){
-        if(validateOtpField()){
-            AppSession.verificationCode?.let {
-                authRepository.validateOtp(it, otp.value!!, object : ResponseListener<FirebaseUser>{
+    fun validateOtp() {
+        if (validateOtpField()) {
+
+            safeLet(AppSession.verificationCode, otp.value) { verificationCode, otp ->
+                authRepository.validateOtp(
+                    verificationCode,
+                    otp,
+                    object :
+                        ResponseListener<FirebaseUser> {
+                        override fun onStart() {
+                            loadingStatus.value = true
+                        }
+
+                        override fun onFinish() {
+                            loadingStatus.value = false
+                        }
+
+                        override fun onResponse(result: ApiResponse<FirebaseUser>) {
+                            loadingStatus.value = false
+                            if (result.status == ResponseStatus.SUCCESS) {
+                                AppSession.user = result.data
+                                getIdentityToken()
+                            } else {
+                                serviceErrorEvent.value = result.error?.message
+                            }
+                        }
+
+                    })
+            }
+
+
+        }
+    }
+
+
+    fun resendOtp() {
+
+        safeLet(AppSession.phoneNumber, AppSession.resendToken) { phoneNumber, resendToken ->
+            authRepository.resendVerificationCode(
+                phoneNumber,
+                resendToken,
+                object :
+                    ResponseListener<Verification> {
                     override fun onStart() {
                         loadingStatus.value = true
                     }
@@ -41,45 +81,20 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
                         loadingStatus.value = false
                     }
 
-                    override fun onResponse(result: ApiResponse<FirebaseUser>) {
+                    override fun onResponse(result: ApiResponse<Verification>) {
                         loadingStatus.value = false
-                        if(result.status == ResponseStatus.SUCCESS){
-                            AppSession.user = result.data
-                            verficiationSuccessEvent.call()
-                        }else{
+                        if (result.status == ResponseStatus.SUCCESS) {
+                            AppSession.verificationCode = result.data?.verificationCode
+                            AppSession.resendToken = result.data?.resendToken
+                            resendOtpEvent.call()
+                        } else
                             serviceErrorEvent.value = result.error?.message
-                        }
+
                     }
 
                 })
-            }
-
         }
-    }
 
-
-    fun resendOtp(){
-        authRepository.resendVerificationCode(AppSession.phoneNumber, AppSession.resendToken!!, object : ResponseListener<Verification>{
-            override fun onStart() {
-                loadingStatus.value = true
-            }
-
-            override fun onFinish() {
-                loadingStatus.value = false
-            }
-
-            override fun onResponse(result: ApiResponse<Verification>) {
-                loadingStatus.value = false
-                if(result.status == ResponseStatus.SUCCESS) {
-                    AppSession.verificationCode = result.data?.verificationCode
-                    AppSession.resendToken = result.data?.resendToken
-                    resendOtpEvent.call()
-                }else
-                    serviceErrorEvent.value = result.error?.message
-
-            }
-
-        })
     }
 
     private fun validateOtpField() : Boolean{
@@ -90,6 +105,30 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
             otpFieldErrorValue.value = R.string.error_msg_empty
             true
         }
+    }
+
+
+    private fun getIdentityToken(){
+        authRepository.getIdentityToken(object:
+            ResponseListener<String> {
+            override fun onStart() {
+                loadingStatus.value = true
+            }
+
+            override fun onFinish() {
+                loadingStatus.value = false
+            }
+
+            override fun onResponse(result: ApiResponse<String>) {
+                loadingStatus.value = false
+                if(result.status == ResponseStatus.SUCCESS) {
+                    AppSession.idToken = result.data
+                    verficiationSuccessEvent.call()
+                }else
+                    serviceErrorEvent.value = result.error?.message
+            }
+
+        })
     }
 
 

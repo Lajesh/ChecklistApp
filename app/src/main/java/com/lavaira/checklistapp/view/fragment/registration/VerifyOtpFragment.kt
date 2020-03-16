@@ -2,11 +2,13 @@ package com.lavaira.checklistapp.view.fragment.registration
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.databinding.FragmentVerifyOtpBinding
+import com.lavaira.checklistapp.utils.FragmentUtils
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_verify_otp.*
 
@@ -45,6 +47,9 @@ class VerifyOtpFragment : BaseFragment<VerificationViewModel, FragmentVerifyOtpB
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.verficiationSuccessEvent.observe(this, Observer{
+
+            FragmentUtils.replaceFragment(activity as AppCompatActivity, RegistrationFragment(), R.id.fragmentContainer,
+                true, FragmentUtils.FragmentAnimation.TRANSITION_SLIDE_LEFT_RIGHT)
 
         })
 

@@ -7,7 +7,7 @@ import com.lavaira.checklistapp.databinding.ActivityMainBinding
 import com.lavaira.checklistapp.utils.FragmentUtils
 import com.lavaira.checklistapp.view.activity.base.BaseActivity
 import com.lavaira.checklistapp.view.fragment.landing.LandingFragment
-import com.lavaira.checklistapp.view.fragment.news.NewsListViewModel
+import com.lavaira.checklistapp.viewmodel.EmptyViewModel
 
 
 /****
@@ -16,15 +16,15 @@ import com.lavaira.checklistapp.view.fragment.news.NewsListViewModel
  * Created on: 15/03/20
  * Modified on: 15/03/20
  *****/
-class PreLoginActivity : BaseActivity<NewsListViewModel, ActivityMainBinding>() {
+class PreLoginActivity : BaseActivity<EmptyViewModel, ActivityMainBinding>() {
     override val layoutRes: Int
         get() = R.layout.activity_main
 
     override val bindingVariable: Int
         get() = BR.viewModel
 
-    override fun getViewModel(): Class<NewsListViewModel> {
-      return NewsListViewModel::class.java
+    override fun getViewModel(): Class<EmptyViewModel> {
+      return EmptyViewModel::class.java
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

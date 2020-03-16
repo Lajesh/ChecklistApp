@@ -20,7 +20,7 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-2dp"
+            android:layout_marginTop="-1dp"
             android:background="@color/color_white"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorIndigo"
@@ -31,7 +31,7 @@
             android:id="@+id/ivBgImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:src="@drawable/bg_verify" />
 
 
@@ -64,24 +64,15 @@
             app:viewType="line" />
 
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/tipOtp"-->
-<!--            field_error="@{viewModel.otpFieldErrorValue}"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/_15sdp"-->
-<!--            android:layout_marginTop="@dimen/_20sdp"-->
-<!--            android:layout_marginEnd="@dimen/_15sdp">-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            error="@{viewModel.otpFieldErrorValue}"
+            android:textColor="#8B0000"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_25sdp"/>
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="@string/verify_screen_verify"-->
-<!--                android:inputType="number"-->
-<!--                android:maxLength="6"-->
-<!--                android:text="@={viewModel.otp}" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
 
         <View
