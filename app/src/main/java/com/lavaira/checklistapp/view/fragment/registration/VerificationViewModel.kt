@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
-import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.Response
 import com.lavaira.checklistapp.data.remote.api.ResponseListener
 import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
@@ -26,13 +26,12 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
 
     val otp = MutableLiveData<String>()
     val otpFieldErrorValue = MutableLiveData<Int>()
-    val verficiationSuccessEvent = SingleLiveEvent<Void>()
-    val resendOtpEvent = SingleLiveEvent<Void>()
+    val verficiationSuccessEvent = SingleLiveEvent<Boolean>()
+    val resendOtpEvent = SingleLiveEvent<Boolean>()
 
 
     fun validateOtp() {
         if (validateOtpField()) {
-
             safeLet(AppSession.verificationCode, otp.value) { verificationCode, otp ->
                 authRepository.validateOtp(
                     verificationCode,
@@ -47,7 +46,7 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
                             loadingStatus.value = false
                         }
 
-                        override fun onResponse(result: ApiResponse<FirebaseUser>) {
+                        override fun onResponse(result: Response<FirebaseUser>) {
                             loadingStatus.value = false
                             if (result.status == ResponseStatus.SUCCESS) {
                                 AppSession.user = result.data
@@ -81,14 +80,14 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
                         loadingStatus.value = false
                     }
 
-                    override fun onResponse(result: ApiResponse<Verification>) {
-                        loadingStatus.value = false
+                    override fun onResponse(result: Response<Verification>) {
+                        loadingStatus.postValue(false)
                         if (result.status == ResponseStatus.SUCCESS) {
                             AppSession.verificationCode = result.data?.verificationCode
                             AppSession.resendToken = result.data?.resendToken
-                            resendOtpEvent.call()
+                            resendOtpEvent.postValue(true)
                         } else
-                            serviceErrorEvent.value = result.error?.message
+                            serviceErrorEvent.postValue(result.error?.message)
 
                     }
 
@@ -119,7 +118,7 @@ class VerificationViewModel @Inject constructor(private val authRepository: Auth
                 loadingStatus.value = false
             }
 
-            override fun onResponse(result: ApiResponse<String>) {
+            override fun onResponse(result: Response<String>) {
                 loadingStatus.value = false
                 if(result.status == ResponseStatus.SUCCESS) {
                     AppSession.idToken = result.data

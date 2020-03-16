@@ -1,8 +1,11 @@
 package com.lavaira.checklistapp.data.remote.api
 
+import androidx.lifecycle.LiveData
 import com.lavaira.checklistapp.data.remote.model.response.registration.RegistrationResponse
-import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 /****
@@ -14,6 +17,8 @@ import retrofit2.http.*
 interface Api {
 
     @PUT("Users/{userid}")
-    fun register(@Path("userid")userId: String, @Query("auth") idToken: String,  @Body map: HashMap<String, String>) : Observable<RegistrationResponse>
+    fun register(@Path("userid")userId: String,
+                 @Query("auth") idToken: String,
+                 @Body map: HashMap<String, String>) : LiveData<ApiResponse<RegistrationResponse>>
 
 }

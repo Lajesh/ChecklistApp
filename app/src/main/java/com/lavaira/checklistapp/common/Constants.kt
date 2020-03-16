@@ -19,6 +19,7 @@ object Constants {
     const val QUERY_PARAM__APIKEY = "api-key"
     const val PW_LENGTH = 6
     const val BASE_AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:"
+    const val HTML_PATTERN = "<(\"[^\"]*\"|'[^']*'|[^'\">])*>"
 
 
     @StringDef(EMAIL, FIRST_NAME, LAST_NAME, ADDRESS)

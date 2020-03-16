@@ -1,14 +1,13 @@
 package com.lavaira.checklistapp.view.fragment.registration
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.lavaira.checklistapp.R
-import com.lavaira.checklistapp.architecture.SingleLiveEvent
-import com.lavaira.checklistapp.common.AppSession
+import com.lavaira.checklistapp.architecture.AbsentLiveData
+import com.lavaira.checklistapp.data.remote.api.Resource
 import com.lavaira.checklistapp.data.remote.model.request.register.RegistrationRequest
-import com.lavaira.checklistapp.data.remote.api.ApiResponse
-import com.lavaira.checklistapp.data.remote.api.ResponseListener
 import com.lavaira.checklistapp.data.remote.model.response.registration.RegistrationResponse
-import com.lavaira.checklistapp.repository.AuthRepository
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.utils.SafeLet
 import com.lavaira.checklistapp.utils.Validator
@@ -22,8 +21,7 @@ import javax.inject.Inject
  * Modified on: 2020-03-15
  *****/
 class RegistrationViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    private val userRepository: UserRepository
 ) :
     BaseViewModel(), SafeLet {
 
@@ -38,7 +36,19 @@ class RegistrationViewModel @Inject constructor(
     val addressFieldErrorValue = MutableLiveData<Int>()
     val emailFieldErrorValue = MutableLiveData<Int>()
 
-    val signupCompletedEvent = SingleLiveEvent<Void>()
+    val updateProfileRequest = MutableLiveData<RegistrationRequest>()
+
+
+
+    val updateProfileResponse: LiveData<Resource<RegistrationResponse>> = Transformations
+        .switchMap(updateProfileRequest){ request->
+            if(null == request)
+                AbsentLiveData.create()
+            else{
+                userRepository.saveUserProfile(request)
+            }
+        }
+
 
 
     private fun validateFirstName(): Boolean {
@@ -109,43 +119,18 @@ class RegistrationViewModel @Inject constructor(
      * Service call to perform the signup operation
      */
     fun saveUserProfile() {
-        if (isAllFieldsValid()) {
+        if(isAllFieldsValid()) {
 
-            safeLet(
-                firstNameField.value,
-                lastNameField.value,
-                emailField.value,
-                addressField.value
-            ) { firstName, lastName, email, address ->
-                userRepository.saveUserProfile(
-                    RegistrationRequest(firstName, lastName, address, email),
-                    object :
-                        ResponseListener<RegistrationResponse> {
-                        override fun onStart() {
-                            loadingStatus.value = true
-                        }
-
-                        override fun onFinish() {
-                            loadingStatus.value = false
-                        }
-
-                        override fun onResponse(result: ApiResponse<RegistrationResponse>) {
-                            loadingStatus.value = false
-                            if (result.error != null) {
-                                serviceErrorEvent.value = result.errorDescription
-                            } else {
-                                AppSession.idToken = result.data?.idToken
-                                AppSession.localId = result.data?.localId
-                                signupCompletedEvent.call()
-                            }
-                        }
-
-                    })
-            }
-
+            updateProfileRequest.value = RegistrationRequest(
+                firstNameField.value.toString(),
+                lastNameField.value.toString(),
+                addressField.value.toString(),
+                emailField.value.toString()
+            )
         }
 
     }
+
 
 
 }

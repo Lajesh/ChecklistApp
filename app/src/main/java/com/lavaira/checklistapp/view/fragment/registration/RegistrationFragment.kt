@@ -10,7 +10,7 @@ import com.lavaira.checklistapp.view.activity.DashboardActivity
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 
 /****
- * File Description
+ * Registration Fragment
  * Author: Lajesh Dineshkumar
  * Company: Farabi Technologies
  * Created on: 2020-03-15
@@ -35,10 +35,25 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel, FragmentRegistr
 
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
-        viewModel.signupCompletedEvent.observe(this, Observer{
-            activity?.finish()
-            val dashboardIntent = Intent(activity, DashboardActivity::class.java)
-            startActivity(dashboardIntent)
+        viewModel.updateProfileResponse.observe(this, Observer {
+
+            when {
+                it.status.isLoading() -> {
+                    viewModel.loadingStatus.value = true
+                }
+                it.status.isSuccessful() -> {
+                    viewModel.loadingStatus.value = false
+                    it.data?.let {
+                        activity?.finish()
+                        val dashboardIntent = Intent(activity, DashboardActivity::class.java)
+                        startActivity(dashboardIntent)
+                    }
+                }
+                it.status.isError() -> {
+                    viewModel.loadingStatus.value = false
+                    viewModel.serviceErrorEvent.value = it.errorMessage
+                }
+            }
         })
     }
 

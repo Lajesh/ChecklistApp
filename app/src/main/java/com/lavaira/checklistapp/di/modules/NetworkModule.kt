@@ -1,14 +1,13 @@
 package com.lavaira.checklistapp.di.modules
 
 import com.lavaira.checklistapp.data.remote.RequestInterceptor
-import com.lavaira.checklistapp.data.remote.api.LiveDataCallAdapterFactoryForRetrofit
+import com.lavaira.checklistapp.data.remote.api.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.CookieManager
 import java.util.concurrent.TimeUnit
@@ -52,8 +51,7 @@ class NetworkModule {
     fun provideRetrofit(@Named(BASE_URL) baseUrl: String, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addCallAdapterFactory(LiveDataCallAdapterFactoryForRetrofit())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

@@ -7,33 +7,18 @@ package com.lavaira.checklistapp.data.remote.api
  * Created on: 15/03/20
  * Modified on: 15/03/20
  *****/
-data class Resource<ResultType>(
-    var status: Status,
-    var data: ResultType? = null,
-    var errorMessage: String? = null
-) {
-
+data class Resource<out T>(val status: Status, val data: T?, val error: Throwable?, val errorCode: String, val errorMessage: String) {
     companion object {
-        /**
-         * Creates [Resource] object with `SUCCESS` status and [data].
-         * Returning object of Resource(Status.SUCCESS, data, null)  last value is null so passing it optionally
-         */
-        fun <ResultType> success(data: ResultType): Resource<ResultType> =
-            Resource(Status.SUCCESS, data)
+        fun <T> success(data: T?): Resource<T> {
+            return Resource(Status.SUCCESS, data, null, "", "")
+        }
 
-        /**
-         * Creates [Resource] object with `LOADING` status to notify
-         * the UI to showing loading.
-         * Returning object of Resource(Status.SUCCESS, null, null) last two values are null so passing them optionally
-         */
-        fun <ResultType> loading(): Resource<ResultType> = Resource(Status.LOADING)
+        fun <T> error(error: Throwable, data: T?, errorCode: String, errorMessage: String): Resource<T> {
+            return Resource(Status.ERROR, data, error, errorCode, errorMessage)
+        }
 
-        /**
-         * Creates [Resource] object with `ERROR` status and [message].
-         * Returning object of Resource(Status.ERROR, errorMessage = message)
-         */
-        fun <ResultType> error(message: String?): Resource<ResultType> =
-            Resource(Status.ERROR, errorMessage = message)
-
+        fun <T> loading(data: T?): Resource<T> {
+            return Resource(Status.LOADING, data, null, "", "")
+        }
     }
 }

@@ -9,5 +9,5 @@ package com.lavaira.checklistapp.data.remote.api
 interface ResponseListener<T> {
     fun onStart()
     fun onFinish()
-    fun onResponse(result: ApiResponse<T>)
+    fun onResponse(result: Response<T>)
 }

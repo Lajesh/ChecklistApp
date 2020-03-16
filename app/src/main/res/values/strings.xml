@@ -11,6 +11,7 @@
         again
     </string>
     <string name="networkErrorCode">NO_INTERNET_CONNECTION</string>
+    <string name="requestTimeOutErrorCode">REQUEST_TIME_OUT</string>
     <string name="unknownError">Something went wrong!</string>
     <string name="requestTimeOutError">Oooops! We couldn’t capture your request in time. Please try again.</string>
     <string name="errorCodeMalformedJson">MALFORMED_JSON</string>

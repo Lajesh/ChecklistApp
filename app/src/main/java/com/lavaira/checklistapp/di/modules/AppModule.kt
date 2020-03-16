@@ -35,8 +35,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(api: Api, scheduler: SchedulerContract): UserRepository {
-        return UserRepository(api, scheduler)
+    fun provideUserRepository(api: Api): UserRepository {
+        return UserRepository(api)
     }
 
 

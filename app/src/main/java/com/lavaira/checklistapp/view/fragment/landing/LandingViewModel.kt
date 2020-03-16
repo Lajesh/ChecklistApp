@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
-import com.lavaira.checklistapp.data.remote.api.ApiResponse
+import com.lavaira.checklistapp.data.remote.api.Response
 import com.lavaira.checklistapp.data.remote.api.ResponseListener
 import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
@@ -21,7 +21,7 @@ import javax.inject.Inject
  *****/
 class LandingViewModel @Inject constructor(private val authRepository: AuthRepository) : BaseViewModel() {
 
-    val registrationEvent = SingleLiveEvent<Void>()
+    val registrationEvent = SingleLiveEvent<Boolean>()
 
     val phoneNumberField = MutableLiveData<String>()
     val phoneNumberFieldError = MutableLiveData<Int>()
@@ -40,14 +40,14 @@ class LandingViewModel @Inject constructor(private val authRepository: AuthRepos
                     loadingStatus.value = false
                 }
 
-                override fun onResponse(result: ApiResponse<Verification>) {
-                    loadingStatus.value = false
+                override fun onResponse(result: Response<Verification>) {
+                    loadingStatus.postValue(false)
                     if(result.status == ResponseStatus.SUCCESS) {
                         AppSession.verificationCode = result.data?.verificationCode
                         AppSession.resendToken = result.data?.resendToken
-                        registrationEvent.call()
+                        registrationEvent.postValue(true)
                     }else
-                        serviceErrorEvent.value = result.error?.message
+                        serviceErrorEvent.postValue(result.error?.message)
 
                 }
 
