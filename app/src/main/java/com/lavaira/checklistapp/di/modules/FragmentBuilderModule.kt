@@ -1,5 +1,7 @@
 package com.lavaira.checklistapp.di.modules
 
+import com.lavaira.checklistapp.view.fragment.dashboard.AddTaskDialogFragment
+import com.lavaira.checklistapp.view.fragment.dashboard.DashboardFragment
 import com.lavaira.checklistapp.view.fragment.landing.LandingFragment
 import com.lavaira.checklistapp.view.fragment.registration.RegistrationFragment
 import com.lavaira.checklistapp.view.fragment.registration.VerifyOtpFragment
@@ -24,4 +26,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun contributeVerifyOtpFragment(): VerifyOtpFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDashboardFragment(): DashboardFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAddTaskDialogFragment(): AddTaskDialogFragment
 }

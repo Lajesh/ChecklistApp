@@ -8,6 +8,12 @@ import com.lavaira.checklistapp.common.Constants.REGISTRATION_ATTRIBUTES.Compani
 import com.lavaira.checklistapp.common.Constants.REGISTRATION_ATTRIBUTES.Companion.EMAIL
 import com.lavaira.checklistapp.common.Constants.REGISTRATION_ATTRIBUTES.Companion.FIRST_NAME
 import com.lavaira.checklistapp.common.Constants.REGISTRATION_ATTRIBUTES.Companion.LAST_NAME
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.DESC
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.END_DATE
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.ID
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.START_DATE
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.STATUS
+import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.TITLE
 
 /****
  * Keep all the common constants here
@@ -17,6 +23,7 @@ import com.lavaira.checklistapp.common.Constants.REGISTRATION_ATTRIBUTES.Compani
  *****/
 object Constants {
     const val QUERY_PARAM__APIKEY = "api-key"
+    const val QUERY_PARAM_AUTH = "auth"
     const val PW_LENGTH = 6
     const val BASE_AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:"
     const val HTML_PATTERN = "<(\"[^\"]*\"|'[^']*'|[^'\">])*>"
@@ -30,6 +37,19 @@ object Constants {
             const val FIRST_NAME = "firstname"
             const val LAST_NAME = "lastname"
             const val ADDRESS = "address"
+        }
+    }
+
+    @StringDef(ID, TITLE, DESC, START_DATE, END_DATE, STATUS)
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class TASK_ATTRIBUTES {
+        companion object {
+            const val ID = "id"
+            const val TITLE = "title"
+            const val DESC = "description"
+            const val START_DATE = "startdate"
+            const val END_DATE = "enddate"
+            const val STATUS = "status"
         }
     }
 

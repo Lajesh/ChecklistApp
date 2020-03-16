@@ -1,7 +1,9 @@
 package com.lavaira.checklistapp.di.modules
 
 import com.lavaira.checklistapp.data.remote.RequestInterceptor
+import com.lavaira.checklistapp.data.remote.TokenAuthenticator
 import com.lavaira.checklistapp.data.remote.api.LiveDataCallAdapterFactory
+import com.lavaira.checklistapp.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.JavaNetCookieJar
@@ -33,11 +35,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(logging: HttpLoggingInterceptor, authRepository: AuthRepository): OkHttpClient {
         val cookieHandler = CookieManager()
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(RequestInterceptor())
+            .authenticator(TokenAuthenticator(authRepository))
             .cookieJar(JavaNetCookieJar(cookieHandler))
             .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)

@@ -1,15 +1,18 @@
 package com.lavaira.checklistapp.view.activity.base
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import android.os.Bundle
-import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
+import com.lavaira.checklistapp.ChecklistApplication
+import com.lavaira.checklistapp.utils.PreferenceUtil
 import com.lavaira.checklistapp.view.listeners.BackButtonHandlerListener
 import com.lavaira.checklistapp.view.listeners.BackPressListener
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
@@ -49,6 +52,9 @@ abstract class BaseActivity<V : ViewModel, D : ViewDataBinding> : AppCompatActiv
     abstract val bindingVariable: Int
 
     protected abstract fun getViewModel(): Class<V>
+
+    protected var sharedPreferences: SharedPreferences =
+        PreferenceUtil.customPrefs(ChecklistApplication.applicationContext(), "checklist_pref_file")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

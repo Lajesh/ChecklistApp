@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.lavaira.checklistapp.view.fragment.dashboard.AddTaskViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <EditText android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/type_your_task_title_here"
+            android:text="@={viewModel.taskTitle}"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textSize="@dimen/_16ssp"/>
+
+        <LinearLayout android:id="@+id/llDates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etTitle"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/_15sdp"
+            android:weightSum="2">
+
+            <EditText android:id="@+id/etStartDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                android:hint="@string/start_date"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/_16ssp"/>
+
+            <EditText android:id="@+id/etEndDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                android:hint="@string/end_date"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/_16ssp"/>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnStatus"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_below="@id/llDates"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/btn_rounded_corner"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/save"
+            android:onClick="@{()->viewModel.addTask()}"
+            android:textColor="@color/color_white" />
+
+    </RelativeLayout>
+</layout>

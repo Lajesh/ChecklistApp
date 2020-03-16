@@ -4,8 +4,11 @@ import android.content.Intent
 import androidx.lifecycle.Observer
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
+import com.lavaira.checklistapp.common.SharedPrefConstants
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.databinding.FragmentRegistrationBinding
+import com.lavaira.checklistapp.utils.PreferenceUtil.set
+import com.lavaira.checklistapp.utils.Utils
 import com.lavaira.checklistapp.view.activity.DashboardActivity
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 
@@ -29,7 +32,7 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel, FragmentRegistr
     }
 
     override fun getTitle(): String {
-        return ""
+        return getString(R.string.title_Profile)
     }
 
     override fun subscribeNavigationEvent() {
@@ -42,6 +45,8 @@ class RegistrationFragment : BaseFragment<RegistrationViewModel, FragmentRegistr
                 }
                 it.status.isSuccessful() -> {
                     viewModel.loadingStatus.value = false
+                    Utils.hideKeyboard(activity)
+                    sharedPreferences[SharedPrefConstants.SHARED_PREF_KEY_LOGGED_IN] = true
                     it.data?.let {
                         activity?.finish()
                         val dashboardIntent = Intent(activity, DashboardActivity::class.java)

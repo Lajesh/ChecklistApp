@@ -9,6 +9,7 @@ import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.databinding.FragmentVerifyOtpBinding
 import com.lavaira.checklistapp.utils.FragmentUtils
+import com.lavaira.checklistapp.utils.Utils
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_verify_otp.*
 
@@ -33,7 +34,7 @@ class VerifyOtpFragment : BaseFragment<VerificationViewModel, FragmentVerifyOtpB
         get() = this
 
     override fun getTitle(): String {
-       return ""
+       return getString(R.string.title_verification)
     }
 
 
@@ -46,7 +47,7 @@ class VerifyOtpFragment : BaseFragment<VerificationViewModel, FragmentVerifyOtpB
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.verficiationSuccessEvent.observe(this, Observer{
-
+            Utils.hideKeyboard(activity)
             FragmentUtils.replaceFragment(activity as AppCompatActivity, RegistrationFragment(), R.id.fragmentContainer,
                 true, FragmentUtils.FragmentAnimation.TRANSITION_SLIDE_LEFT_RIGHT)
 

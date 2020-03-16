@@ -1,5 +1,6 @@
 package com.lavaira.checklistapp.data.remote
 
+import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.common.Configuration
 import com.lavaira.checklistapp.common.Constants
 import okhttp3.Interceptor
@@ -17,11 +18,14 @@ class RequestInterceptor : Interceptor {
         val originalRequest = chain.request()
         val originalHttpUrl = originalRequest.url
 
-        val url = originalHttpUrl.newBuilder()
+        val urlBuilder = originalHttpUrl.newBuilder()
             .addQueryParameter(Constants.QUERY_PARAM__APIKEY, Configuration.API_KEY)
-            .build()
 
-        val request = originalRequest.newBuilder().url(url).build()
+
+        if(!AppSession.idToken.isNullOrEmpty()){
+            urlBuilder.addQueryParameter(Constants.QUERY_PARAM_AUTH, AppSession.idToken)
+        }
+        val request = originalRequest.newBuilder().url(urlBuilder.build()).build()
         return chain.proceed(request)
     }
 }

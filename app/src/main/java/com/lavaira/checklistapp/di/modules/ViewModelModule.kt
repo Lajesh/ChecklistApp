@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.lavaira.checklistapp.architecture.ViewModelFactory
 import com.lavaira.checklistapp.di.key.ViewModelKey
+import com.lavaira.checklistapp.view.fragment.dashboard.AddTaskViewModel
+import com.lavaira.checklistapp.view.fragment.dashboard.DashboardViewModel
 import com.lavaira.checklistapp.view.fragment.landing.LandingViewModel
 import com.lavaira.checklistapp.view.fragment.registration.RegistrationViewModel
 import com.lavaira.checklistapp.view.fragment.registration.VerificationViewModel
@@ -43,6 +45,17 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(VerificationViewModel::class)
     fun bindVerificationViewModel(verificationViewModel: VerificationViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DashboardViewModel::class)
+    fun bindDashboardViewModel(dashboardViewModel: DashboardViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddTaskViewModel::class)
+    fun bindAddTaskViewModel(addTaskViewModel: AddTaskViewModel): ViewModel
 
     @Binds
     fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

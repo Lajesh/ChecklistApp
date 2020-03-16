@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">ChecklistApp</string>
+    <string name="title_verification">Verification</string>
+    <string name="title_Profile">Profile</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
     <string name="article_icon">Article Icon</string>
     <string name="error">Error</string>
     <string name="ok">OK</string>
@@ -45,4 +49,8 @@
     <string name="error_msg_invalid_otp">Invalid otp</string>
     <string name="otp_screen_info">Please enter the 6 digit OTP received on your mobile number to verify your account </string>
     <string name="error_msg_empty"></string>
+    <string name="type_your_task_title_here">Type your task title here</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="save">Save</string>
 </resources>

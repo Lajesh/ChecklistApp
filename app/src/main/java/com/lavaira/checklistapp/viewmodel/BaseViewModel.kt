@@ -1,9 +1,12 @@
 package com.lavaira.checklistapp.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.content.SharedPreferences
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
+import androidx.lifecycle.ViewModel
+import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
+import com.lavaira.checklistapp.utils.PreferenceUtil
 
 
 /****
@@ -21,6 +24,9 @@ abstract class BaseViewModel : ViewModel(), Observable {
     val serviceErrorEvent: SingleLiveEvent<String> = SingleLiveEvent()
 
     private val callbacks = PropertyChangeRegistry()
+
+    private var sharedPreferences: SharedPreferences =
+        PreferenceUtil.customPrefs(ChecklistApplication.applicationContext(), "checklist_pref_file")
 
     open fun onBackpress() {
         backPressAction.value = true

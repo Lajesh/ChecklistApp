@@ -1,6 +1,7 @@
 package com.lavaira.checklistapp.view.fragment.base
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.di.Injectable
+import com.lavaira.checklistapp.utils.PreferenceUtil
 import com.lavaira.checklistapp.view.activity.base.BaseActivity
 import com.lavaira.checklistapp.view.listeners.BackButtonHandlerListener
 import com.lavaira.checklistapp.view.listeners.BackPressListener
@@ -52,6 +55,9 @@ abstract class BaseFragment<V : ViewModel, D : ViewDataBinding> : androidx.fragm
     abstract fun getTitle(): String
 
     open val subscriptionContract: SubscriptionContract? = null
+
+    protected var sharedPreferences: SharedPreferences =
+        PreferenceUtil.customPrefs(ChecklistApplication.applicationContext(), "checklist_pref_file")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
