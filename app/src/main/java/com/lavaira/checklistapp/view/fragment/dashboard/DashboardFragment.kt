@@ -1,5 +1,6 @@
 package com.lavaira.checklistapp.view.fragment.dashboard
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
@@ -31,6 +32,12 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
        return getString(R.string.title_dashboard)
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.retrieveTasks()
+    }
+
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.addTaskEvent.observe(this, Observer{
@@ -38,6 +45,21 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
                 activity?.supportFragmentManager!!,
                 AddTaskDialogFragment::class.java.canonicalName
             )
+        })
+
+        viewModel.retrieveTasksResponse.observe(this, Observer {
+            when {
+                it.status.isLoading() -> {
+                    viewModel.loadingStatus.value = true
+                }
+                it.status.isSuccessful() -> {
+                    viewModel.loadingStatus.value = false
+                }
+                it.status.isError() -> {
+                    viewModel.loadingStatus.value = false
+                    viewModel.serviceErrorEvent.value = it.errorMessage
+                }
+            }
         })
     }
 }

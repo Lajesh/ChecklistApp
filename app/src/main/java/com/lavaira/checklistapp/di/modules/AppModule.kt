@@ -1,10 +1,10 @@
 package com.lavaira.checklistapp.di.modules
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
-import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.data.local.AppDatabase
 import com.lavaira.checklistapp.data.local.dao.TasksDao
 import com.lavaira.checklistapp.data.remote.api.Api
@@ -35,8 +35,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(api: Api): UserRepository {
-        return UserRepository(api)
+    fun provideUserRepository(api: Api, tasksDao: TasksDao): UserRepository {
+        return UserRepository(api, tasksDao)
     }
 
 
@@ -68,7 +68,7 @@ class AppModule {
      */
     @Singleton
     @Provides
-    fun provideUserDao(db: AppDatabase): TasksDao {
+    fun providerTaskDao(db: AppDatabase): TasksDao {
         return db.tasksDao()
     }
 
@@ -78,8 +78,8 @@ class AppModule {
      */
     @Singleton
     @Provides
-    fun provideContext(application: ChecklistApplication): Context {
-        return application.applicationContext
+    fun provideContext(application: Application): Context {
+        return application
     }
 
 }

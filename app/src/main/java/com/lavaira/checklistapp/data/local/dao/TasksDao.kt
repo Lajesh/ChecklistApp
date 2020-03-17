@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 
 /****
  * Abstracts access to Tasks database
@@ -15,18 +16,22 @@ import androidx.room.Query
  *****/
 @Dao
 interface TasksDao {
-//    /**
-//     * Insert articles into the database
-//     */
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    fun insertArticles(articles: List<NewsArticles>): List<Long>
-//
-//    /**
-//     * Get all the articles from database
-//     */
-//    @Query("SELECT * FROM news_table")
-//    fun getNewsArticles(): LiveData<List<NewsArticles>>
-//
-//    @Query("DELETE FROM news_table")
-//    abstract fun deleteAllArticles()
+    /**
+     * Insert an individual task into the database
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun inserTask(task: Task)
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTasks(tasksList: List<Task>)
+
+    /**
+     * Get all the articles from database
+     */
+    @Query("SELECT * FROM tasks_table")
+    fun getTasks(): LiveData<List<Task>>
+
+    @Query("DELETE FROM tasks_table")
+    abstract fun deleteAllTasks()
 }
