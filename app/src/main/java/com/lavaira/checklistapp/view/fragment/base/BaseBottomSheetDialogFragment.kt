@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.di.Injectable
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
@@ -53,6 +57,10 @@ abstract class BaseBottomSheetDialogFragment<V : ViewModel, D : ViewDataBinding>
             sharedViewModel = ViewModelProvider(activity).get(SharedViewModel::class.java)
         }
         viewModel = ViewModelProvider(this, viewModelFactory).get(getViewModel())
+
+        (viewModel as BaseViewModel).serviceErrorEvent.observe(this, Observer {
+            showErrorDialog(it)
+        })
 
     }
 
@@ -103,6 +111,25 @@ abstract class BaseBottomSheetDialogFragment<V : ViewModel, D : ViewDataBinding>
     override fun onDestroyView() {
         super.onDestroyView()
         (viewModel as? BaseViewModel)?.loadingStatus?.removeObservers(this)
+    }
+
+    fun showErrorDialog(message : String){
+
+        val act : FragmentActivity =  activity?.let { it } ?: return
+        val builder = AlertDialog.Builder(act)
+        builder.setTitle(getString(R.string.error))
+        builder.setMessage(message)
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton(getString(R.string.ok)){ dialog, which ->
+            dialog.dismiss()
+        }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
     }
 
 }

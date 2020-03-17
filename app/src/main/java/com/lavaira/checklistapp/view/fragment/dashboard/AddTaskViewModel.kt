@@ -20,6 +20,10 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
 
     val addTaskRequest = MutableLiveData<Task>()
     val taskTitle = MutableLiveData<String>()
+    val taskDesc = MutableLiveData<String>()
+    val startDate = MutableLiveData<String>()
+    val endDate = MutableLiveData<String>()
+    val status = MutableLiveData<String>()
 
 
     val addTaskResponse: LiveData<Resource<Task>> = Transformations
@@ -32,6 +36,7 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
         }
 
     fun addTask(){
-        addTaskRequest.value = Task(title = taskTitle.value.toString())
+        addTaskRequest.value = Task(title = taskTitle.value.toString(), description = taskDesc.value.toString(),
+            startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString())
     }
 }

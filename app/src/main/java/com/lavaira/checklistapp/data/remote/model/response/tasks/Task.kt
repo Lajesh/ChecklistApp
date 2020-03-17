@@ -16,10 +16,11 @@ import com.lavaira.checklistapp.data.remote.model.request.base.BaseRequest
 @Entity(tableName = "tasks_table")
 data class Task (
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @SerializedName("nodeId") var nodeId: String? = "",
     @SerializedName("title") var title: String? = "",
     @SerializedName("description") var description: String? = "",
-    @SerializedName("startDate") var startDate: String? = "",
-    @SerializedName("endDate") var endDate: String? = "",
+    @SerializedName("startdate") var startDate: String? = "",
+    @SerializedName("enddate") var endDate: String? = "",
     @SerializedName("status") var status: String? = ""
 ) : BaseRequest(){
     override fun params(): HashMap<String, String> {

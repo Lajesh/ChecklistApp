@@ -12,7 +12,7 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
  * Created on: 2020-03-16
  * Modified on: 2020-03-16
  *****/
-@Database(entities = [Task::class], version = 1, exportSchema = false)
+@Database(entities = [Task::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase(){
 
     abstract fun tasksDao() : TasksDao

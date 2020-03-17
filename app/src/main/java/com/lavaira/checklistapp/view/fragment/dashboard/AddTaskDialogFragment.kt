@@ -1,13 +1,22 @@
 package com.lavaira.checklistapp.view.fragment.dashboard
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import cafe.adriel.kbus.KBus
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
+import com.lavaira.checklistapp.data.remote.model.EventMessage
 import com.lavaira.checklistapp.databinding.DialogFragmentAddTaskBinding
 import com.lavaira.checklistapp.view.fragment.base.BaseBottomSheetDialogFragment
+import kotlinx.android.synthetic.main.dialog_fragment_add_task.*
+import java.util.*
+
 
 /****
  * Add Task Dialog fragment
@@ -32,10 +41,66 @@ SubscriptionContract{
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        etStartDate.setOnClickListener {
+            val c: Calendar = Calendar.getInstance()
+            val month: Int = c.get(Calendar.MONTH)
+            val day: Int = c.get(Calendar.DAY_OF_MONTH)
+            val year: Int = c.get(Calendar.YEAR)
+
+            val datePickerDialog =
+                DatePickerDialog(activity as FragmentActivity,
+                    OnDateSetListener { view, year, month, dayOfMonth -> etStartDate.setText("$dayOfMonth/$month/$year") },
+                    year,
+                    month,
+                    day
+                )
+            datePickerDialog.datePicker.minDate = c.timeInMillis
+            datePickerDialog.show()
+        }
+
+
+        etEndDate.setOnClickListener{
+            val c: Calendar = Calendar.getInstance()
+            val month: Int = c.get(Calendar.MONTH)
+            val day: Int = c.get(Calendar.DAY_OF_MONTH)
+            val year: Int = c.get(Calendar.YEAR)
+
+            val datePickerDialog =
+                DatePickerDialog(activity as FragmentActivity,
+                    OnDateSetListener { view, year, month, dayOfMonth -> etEndDate.setText("$dayOfMonth/$month/$year") },
+                    year,
+                    month,
+                    day
+                )
+            datePickerDialog.datePicker.minDate = c.timeInMillis
+            datePickerDialog.show()
+        }
+
+    }
+
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.addTaskResponse.observe(this, Observer {
-            dismiss()
+            when {
+                it.status.isLoading() -> {
+                    viewModel.loadingStatus.value = true
+                }
+                it.status.isSuccessful() -> {
+                    viewModel.loadingStatus.value = false
+                    KBus.post(EventMessage(""))
+                    dismiss()
+                }
+                it.status.isError() -> {
+                    viewModel.loadingStatus.value = false
+                    viewModel.serviceErrorEvent.value = it.errorMessage
+                }
+            }
+
+
         })
     }
 }

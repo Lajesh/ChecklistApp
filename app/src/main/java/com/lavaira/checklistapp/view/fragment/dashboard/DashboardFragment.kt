@@ -2,9 +2,11 @@ package com.lavaira.checklistapp.view.fragment.dashboard
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import cafe.adriel.kbus.KBus
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.contract.SubscriptionContract
+import com.lavaira.checklistapp.data.remote.model.EventMessage
 import com.lavaira.checklistapp.databinding.FragmentDashboardBinding
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
 
@@ -48,6 +50,11 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
         })
 
         viewModel.retrieveTasksResponse.observe(this, Observer {
+
+            if(it.data != null){
+                viewModel.items.clear()
+                viewModel.items.addAll(it.data as ArrayList)
+            }
             when {
                 it.status.isLoading() -> {
                     viewModel.loadingStatus.value = true
@@ -57,9 +64,20 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
                 }
                 it.status.isError() -> {
                     viewModel.loadingStatus.value = false
-                    viewModel.serviceErrorEvent.value = it.errorMessage
                 }
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        KBus.subscribe<EventMessage>(this) {
+            viewModel.retrieveTasks()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        KBus.unsubscribe(this)
     }
 }

@@ -1,9 +1,13 @@
 package com.lavaira.checklistapp.view.fragment.dashboard
 
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
+import com.lavaira.checklistapp.BR
+import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.AbsentLiveData
 import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
@@ -11,6 +15,7 @@ import com.lavaira.checklistapp.data.remote.api.Resource
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
+import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject
 
 /****
@@ -25,6 +30,9 @@ class DashboardViewModel @Inject constructor(private val userRepository: UserRep
 
     val retreiveTaskRequest = MutableLiveData<String>()
     val addTaskEvent = SingleLiveEvent<Void>()
+    val items :ObservableList<Task> = ObservableArrayList()
+    val itemBinding: ItemBinding<Task> =
+        ItemBinding.of(BR.viewModel, R.layout.item_task)
 
     init {
         AppSession.user = FirebaseAuth.getInstance().currentUser

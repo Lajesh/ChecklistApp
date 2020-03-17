@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.architecture.AbsentLiveData
 import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.data.local.dao.TasksDao
@@ -14,6 +15,7 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.data.remote.model.response.tasks.TasksResponse
 import com.lavaira.checklistapp.executors.AppExecutors
 import com.lavaira.checklistapp.utils.SafeLet
+import com.lavaira.checklistapp.utils.Utils
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -49,7 +51,7 @@ class UserRepository @Inject constructor(
             }
 
             override fun shouldFetch(data: Task?): Boolean {
-                return true
+                return Utils.isConnected(ChecklistApplication.applicationContext())
             }
 
             override fun createCall(): LiveData<ApiResponse<Task>> {
@@ -102,8 +104,10 @@ class UserRepository @Inject constructor(
         val tasksList = ArrayList<Task>()
         val jsonObject = Gson().fromJson(jsonString, JsonObject::class.java)
         jsonObject.entrySet().iterator().forEach { itm: Map.Entry<String, JsonElement> ->
+            val key = itm.key as String
             val value = itm.value as JsonObject
             val task = Gson().fromJson(value.toString(), Task::class.java)
+            task.nodeId = key
             tasksList.add(task)
         }
         return tasksList
