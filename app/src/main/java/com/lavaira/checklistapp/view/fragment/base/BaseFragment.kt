@@ -23,6 +23,7 @@ import com.lavaira.checklistapp.view.activity.base.BaseActivity
 import com.lavaira.checklistapp.view.listeners.BackButtonHandlerListener
 import com.lavaira.checklistapp.view.listeners.BackPressListener
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
+import com.lavaira.checklistapp.viewmodel.SharedViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -56,18 +57,34 @@ abstract class BaseFragment<V : ViewModel, D : ViewDataBinding> : androidx.fragm
 
     open val subscriptionContract: SubscriptionContract? = null
 
+    protected lateinit var sharedViewModel: SharedViewModel
+
     protected var sharedPreferences: SharedPreferences =
         PreferenceUtil.customPrefs(ChecklistApplication.applicationContext(), "checklist_pref_file")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
+        activity?.let {
+            sharedViewModel = ViewModelProvider(activity!!).get(SharedViewModel::class.java)
+
+        }
         viewModel = ViewModelProvider(this, viewModelFactory).get(getViewModel())
         (viewModel as BaseViewModel).serviceErrorEvent.observe(this, Observer {
             showErrorDialog(it)
         })
+        setSharedViewModel()
 
     }
+
+
+    /**
+     * Method which sets the sharedview to baseviewmodel
+     */
+    private fun setSharedViewModel() {
+        (viewModel as BaseViewModel).sharedViewModel = sharedViewModel
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)

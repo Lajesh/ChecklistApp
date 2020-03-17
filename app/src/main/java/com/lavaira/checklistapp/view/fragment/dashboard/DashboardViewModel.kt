@@ -13,6 +13,7 @@ import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.data.remote.api.Resource
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
+import com.lavaira.checklistapp.listeners.OnItemClickListener
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
 import me.tatarka.bindingcollectionadapter2.ItemBinding
@@ -30,9 +31,19 @@ class DashboardViewModel @Inject constructor(private val userRepository: UserRep
 
     val retreiveTaskRequest = MutableLiveData<String>()
     val addTaskEvent = SingleLiveEvent<Void>()
+    val taskSelectedEvent = SingleLiveEvent<Void>()
     val items :ObservableList<Task> = ObservableArrayList()
     val itemBinding: ItemBinding<Task> =
-        ItemBinding.of(BR.viewModel, R.layout.item_task)
+        ItemBinding.of<Task>(BR.viewModel, R.layout.item_task)
+            .bindExtra(BR.listener, object : OnItemClickListener{
+                override fun onItemClick(item: Any) {
+                    sharedViewModel.selectedTask = item as Task
+                    sharedViewModel.isEditMode = true
+                    taskSelectedEvent.call()
+                }
+
+            })
+
 
     init {
         AppSession.user = FirebaseAuth.getInstance().currentUser
@@ -50,6 +61,8 @@ class DashboardViewModel @Inject constructor(private val userRepository: UserRep
 
 
     fun addTask(){
+        sharedViewModel.selectedTask = null
+        sharedViewModel.isEditMode = false
         addTaskEvent.call()
     }
 

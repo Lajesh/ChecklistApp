@@ -67,6 +67,14 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
                 }
             }
         })
+
+
+        viewModel.taskSelectedEvent.observe(this, Observer {
+            AddTaskDialogFragment().show(
+                activity?.supportFragmentManager!!,
+                AddTaskDialogFragment::class.java.canonicalName
+            )
+        })
     }
 
     override fun onStart() {

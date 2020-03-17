@@ -25,6 +25,8 @@ abstract class BaseViewModel : ViewModel(), Observable {
 
     private val callbacks = PropertyChangeRegistry()
 
+    lateinit var sharedViewModel: SharedViewModel
+
     private var sharedPreferences: SharedPreferences =
         PreferenceUtil.customPrefs(ChecklistApplication.applicationContext(), "checklist_pref_file")
 

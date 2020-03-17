@@ -26,6 +26,17 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
     val status = MutableLiveData<String>()
 
 
+    fun initData(){
+        if(sharedViewModel.isEditMode){
+            taskTitle.value = sharedViewModel.selectedTask?.title
+            taskDesc.value = sharedViewModel.selectedTask?.description
+            startDate.value = sharedViewModel.selectedTask?.startDate
+            endDate.value = sharedViewModel.selectedTask?.endDate
+            status.value = sharedViewModel.selectedTask?.status
+        }
+    }
+
+
     val addTaskResponse: LiveData<Resource<Task>> = Transformations
         .switchMap(addTaskRequest){ request->
             if(null == request)

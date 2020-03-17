@@ -8,11 +8,16 @@
         <variable
             name="viewModel"
             type="com.lavaira.checklistapp.data.remote.model.response.tasks.Task" />
+
+        <variable
+            name="listener"
+            type="com.lavaira.checklistapp.listeners.OnItemClickListener" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->listener.onItemClick(viewModel)}">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

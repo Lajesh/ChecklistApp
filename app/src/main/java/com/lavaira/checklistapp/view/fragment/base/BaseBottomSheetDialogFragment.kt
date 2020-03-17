@@ -35,6 +35,7 @@ abstract class BaseBottomSheetDialogFragment<V : ViewModel, D : ViewDataBinding>
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     protected lateinit var viewModel: V
 
     protected lateinit var dataBinding: D
@@ -57,12 +58,23 @@ abstract class BaseBottomSheetDialogFragment<V : ViewModel, D : ViewDataBinding>
             sharedViewModel = ViewModelProvider(activity).get(SharedViewModel::class.java)
         }
         viewModel = ViewModelProvider(this, viewModelFactory).get(getViewModel())
+        (viewModel as BaseViewModel).sharedViewModel = sharedViewModel
 
         (viewModel as BaseViewModel).serviceErrorEvent.observe(this, Observer {
             showErrorDialog(it)
         })
 
+
+
     }
+
+    /**
+     * Method which sets the sharedview to baseviewmodel
+     */
+    private fun setSharedViewModel() {
+
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)

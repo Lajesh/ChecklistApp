@@ -43,8 +43,7 @@ SubscriptionContract{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        viewModel.initData()
         etStartDate.setOnClickListener {
             val c: Calendar = Calendar.getInstance()
             val month: Int = c.get(Calendar.MONTH)
