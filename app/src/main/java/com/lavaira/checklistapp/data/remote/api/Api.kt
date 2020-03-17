@@ -23,7 +23,7 @@ interface Api {
                  @Body map: HashMap<String, String>) : LiveData<ApiResponse<RegistrationResponse>>
 
     @PUT("Users/{userid}/Tasks/{taskId}")
-    fun addTask(@Path("userid")userId: String, @Path("taskId") taskId: String, @Body map: HashMap<String, String>) : LiveData<ApiResponse<Task>>
+    fun addOrUpdateTask(@Path("userid")userId: String, @Path("taskId") taskId: String, @Body map: HashMap<String, String>) : LiveData<ApiResponse<Task>>
 
 
     @GET("Users/{userid}/Tasks.json")

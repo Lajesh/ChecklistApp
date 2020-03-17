@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.architecture.AbsentLiveData
 import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.data.local.dao.TasksDao
@@ -15,7 +14,6 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.data.remote.model.response.tasks.TasksResponse
 import com.lavaira.checklistapp.executors.AppExecutors
 import com.lavaira.checklistapp.utils.SafeLet
-import com.lavaira.checklistapp.utils.Utils
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -44,20 +42,24 @@ class UserRepository @Inject constructor(
     }
 
 
-    fun addTask(task: Task): LiveData<Resource<Task>> {
+    fun addOrUpdateTask(task: Task, isUpdate: Boolean): LiveData<Resource<Task>> {
         return object : NetwordAndDBBoundResource<Task, Task>(appExecutors) {
             override fun saveCallResult(item: Task) {
-                tasksDao.inserTask(item)
+                //tasksDao.inserTask(item)
             }
 
             override fun shouldFetch(data: Task?): Boolean {
-                return Utils.isConnected(ChecklistApplication.applicationContext())
+                return true
             }
 
             override fun createCall(): LiveData<ApiResponse<Task>> {
-                return api.addTask(
+                var taskNodeId: String? = if(isUpdate)
+                    task.nodeId
+                else
+                    UUID.randomUUID().toString()
+                return api.addOrUpdateTask(
                     AppSession.user?.uid.toString(),
-                    UUID.randomUUID().toString() + ".json",
+                    "$taskNodeId.json",
                     task.params()
                 )
             }

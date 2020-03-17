@@ -24,6 +24,7 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
     val startDate = MutableLiveData<String>()
     val endDate = MutableLiveData<String>()
     val status = MutableLiveData<String>()
+    val nodeId = MutableLiveData<String>()
 
 
     fun initData(){
@@ -33,6 +34,7 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
             startDate.value = sharedViewModel.selectedTask?.startDate
             endDate.value = sharedViewModel.selectedTask?.endDate
             status.value = sharedViewModel.selectedTask?.status
+            nodeId.value = sharedViewModel.selectedTask?.nodeId
         }
     }
 
@@ -42,12 +44,12 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
             if(null == request)
                 AbsentLiveData.create()
             else{
-                userRepository.addTask(request)
+                userRepository.addOrUpdateTask(request, sharedViewModel.isEditMode)
             }
         }
 
     fun addTask(){
         addTaskRequest.value = Task(title = taskTitle.value.toString(), description = taskDesc.value.toString(),
-            startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString())
+            startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString(), nodeId = nodeId.value.toString())
     }
 }
