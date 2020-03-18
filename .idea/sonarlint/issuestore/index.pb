@@ -211,3 +211,15 @@ q
 Aapp/src/main/java/com/lavaira/checklistapp/data/remote/api/Api.kt,f/9/f94ed7b11241f41d57429565e3f9d5bfa72f3900
 |
 Lapp/src/main/java/com/lavaira/checklistapp/data/remote/TokenAuthenticator.kt,d/7/d7cb98e9f0d6f52b9644a9389bc90b69dbfb6eb2
+Œ
+\app/src/main/java/com/lavaira/checklistapp/data/remote/model/response/tasks/TasksResponse.kt,f/a/fa8af8089de7556bb889672d0c2c98321c4bdda7
+|
+Lapp/src/main/java/com/lavaira/checklistapp/data/remote/model/EventMessage.kt,c/4/c43de78c14d80f9437b4a28d08e51458d37d0c81
+{
+Kapp/src/main/java/com/lavaira/checklistapp/listeners/OnItemClickListener.kt,7/b/7b505742eaad9e3b711b5ed83b8f70a1ec23253f
+n
+>.idea/libraries/Gradle__com_github_adrielcafe_KBus_1_1_aar.xml,4/5/4593707ec3b263ff6ba90c00dd512d890414c67f
+~
+N.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_3_41_jar.xml,f/0/f0206e5b899fefb485c3bd12b3fbecff77bf6279
+U
+%app/src/main/res/layout/item_task.xml,0/2/021bd98cb44b2314f682e5594db11a4d77665454

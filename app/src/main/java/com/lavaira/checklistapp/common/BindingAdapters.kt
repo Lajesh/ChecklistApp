@@ -9,7 +9,7 @@ import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+
 
 /****
  * Keep all common binding adapters here
@@ -40,31 +40,31 @@ object BindingAdapters {
         when (task.status) {
             Constants.TASK_STATUS.TASK_TODO -> {
                 view.setBackgroundColor(view.context.resources.getColor(R.color.color_grey))
-                return
+
             }
             Constants.TASK_STATUS.TASK_INPROGRESS -> {
                 view.setBackgroundColor(view.context.resources.getColor(R.color.color_orange))
-                return
+
             }
             Constants.TASK_STATUS.TASK_COMPLETED -> {
                 view.setBackgroundColor(view.context.resources.getColor(R.color.color_green))
-                return
+
             }
         }
 
 
-        task.endDate?.let {
-            try{
-                if(SimpleDateFormat("dd/MM/YYYY").parse(it).before(Date())){
-                    if(task.status != Constants.TASK_STATUS.TASK_TODO ||
-                        task.status != Constants.TASK_STATUS.TASK_INPROGRESS || task.status != Constants.TASK_STATUS.TASK_COMPLETED)
-                        view.setBackgroundColor(view.context.resources.getColor(R.color.color_red))
-                }
-            }catch (ex: Exception){
-                Timber.log(1, ex.message)
+        try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val strDate = sdf.parse(task.endDate)
+            if (System.currentTimeMillis() > strDate.time) {
+                if(task.status == Constants.TASK_STATUS.TASK_TODO ||
+                    task.status == Constants.TASK_STATUS.TASK_INPROGRESS)
+                    view.setBackgroundColor(view.context.resources.getColor(R.color.color_red))
             }
-
+        }catch (ex: Exception){
+            Timber.log(1, ex.message)
         }
+
 
     }
 

@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.lavaira.checklistapp.data.local.AppDatabase
 import com.lavaira.checklistapp.data.local.dao.TasksDao
 import com.lavaira.checklistapp.data.remote.api.Api
@@ -44,6 +46,16 @@ class AppModule {
     @Singleton
     fun provideAuthRepository(auth: FirebaseAuth, phoneAuthProvider: PhoneAuthProvider) : AuthRepository{
         return AuthRepository(auth, phoneAuthProvider)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideDatabaseReference(): DatabaseReference{
+        val database = FirebaseDatabase.getInstance()
+        database.setPersistenceEnabled(true)
+        database.getReference("Users").child("Tasks").keepSynced(true)
+        return database.reference
     }
 
 

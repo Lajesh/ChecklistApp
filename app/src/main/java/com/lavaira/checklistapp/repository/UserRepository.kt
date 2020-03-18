@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.lavaira.checklistapp.ChecklistApplication
 import com.lavaira.checklistapp.architecture.AbsentLiveData
 import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.data.local.dao.TasksDao
@@ -14,13 +15,12 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.data.remote.model.response.tasks.TasksResponse
 import com.lavaira.checklistapp.executors.AppExecutors
 import com.lavaira.checklistapp.utils.SafeLet
+import com.lavaira.checklistapp.utils.Utils
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 /****
- *  User Repository which keeps all the service calls related to User entity
+ * User Repository which keeps all the service calls related to User entity
  * Author: Lajesh Dineshkumar
  * Created on: 2020-03-15
  * Modified on: 2020-03-15
@@ -56,21 +56,26 @@ class UserRepository @Inject constructor(
     fun addOrUpdateTask(task: Task, isUpdate: Boolean): LiveData<Resource<Task>> {
         return object : NetwordAndDBBoundResource<Task, Task>(appExecutors) {
             override fun saveCallResult(item: Task) {
-                // No need to save the information
+                tasksDao.inserTask(item)
             }
 
             override fun shouldFetch(data: Task?): Boolean {
-                return true
+                val isConnected = Utils.isConnected(ChecklistApplication.applicationContext())
+                if(!isConnected){
+                    if(isUpdate)
+                        tasksDao.updateTask(task.title.toString(), task.description.toString(),
+                            task.startDate.toString(), task.endDate.toString(), task.status.toString(), task.nodeId.toString())
+                    else {
+                        tasksDao.inserTask(task)
+                    }
+                }
+                return isConnected
             }
 
             override fun createCall(): LiveData<ApiResponse<Task>> {
-                var taskNodeId: String? = if(isUpdate)
-                    task.nodeId
-                else
-                    UUID.randomUUID().toString()
                 return api.addOrUpdateTask(
                     AppSession.user?.uid.toString(),
-                    "$taskNodeId.json",
+                    "${task.nodeId}.json",
                     task.params()
                 )
             }
@@ -123,16 +128,6 @@ class UserRepository @Inject constructor(
      * @param taskId: Task id to be deleted
      */
     fun deleteTask(userid: String?, taskId: String?) : LiveData<Resource<Void>>{
-//        return object : NetworkResource<Void>() {
-//            override fun loadFromNetwork(): LiveData<ApiResponse<Void>> {
-//                return api.deleteTask(
-//                    userid.toString(),
-//                    "$taskId.json"
-//                )
-//            }
-//        }.asLiveData()
-
-
         return object : NetwordAndDBBoundResource<Void, Void>(appExecutors){
             override fun saveCallResult(item: Void) {
                 tasksDao.deleteTask(taskId.toString())

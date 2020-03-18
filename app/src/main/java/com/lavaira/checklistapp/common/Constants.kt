@@ -63,8 +63,8 @@ object Constants {
             const val ID = "id"
             const val TITLE = "title"
             const val DESC = "description"
-            const val START_DATE = "startdate"
-            const val END_DATE = "enddate"
+            const val START_DATE = "startDate"
+            const val END_DATE = "endDate"
             const val STATUS = "status"
         }
     }

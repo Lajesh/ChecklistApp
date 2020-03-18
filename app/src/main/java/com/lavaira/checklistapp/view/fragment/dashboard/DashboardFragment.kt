@@ -1,6 +1,7 @@
 package com.lavaira.checklistapp.view.fragment.dashboard
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import cafe.adriel.kbus.KBus
 import com.lavaira.checklistapp.BR
@@ -9,6 +10,8 @@ import com.lavaira.checklistapp.contract.SubscriptionContract
 import com.lavaira.checklistapp.data.remote.model.EventMessage
 import com.lavaira.checklistapp.databinding.FragmentDashboardBinding
 import com.lavaira.checklistapp.view.fragment.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_dashboard.*
+
 
 /****
  * Dashboard Fragment
@@ -40,6 +43,13 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
         viewModel.retrieveTasks()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if(!recyclerTasks.adapter?.hasObservers()!!)
+            recyclerTasks.adapter?.setHasStableIds(true)
+
+    }
+
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.addTaskEvent.observe(this, Observer{
@@ -51,10 +61,10 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
 
         viewModel.retrieveTasksResponse.observe(this, Observer {
 
-                viewModel.items.clear()
-
-                if(null != it.data)
+                if(null != it.data) {
+                    viewModel.items.clear()
                     viewModel.items.addAll(it.data as ArrayList)
+                }
 
             when {
                 it.status.isLoading() -> {
@@ -71,6 +81,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
 
 
         viewModel.taskSelectedEvent.observe(this, Observer {
+
             AddTaskDialogFragment().show(
                 activity?.supportFragmentManager!!,
                 AddTaskDialogFragment::class.java.canonicalName

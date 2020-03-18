@@ -31,6 +31,7 @@ class ChecklistApplication : Application(), HasActivityInjector {
 
     companion object {
         var instance: ChecklistApplication? = null
+
         fun applicationContext(): Context {
             return instance!!.applicationContext
         }

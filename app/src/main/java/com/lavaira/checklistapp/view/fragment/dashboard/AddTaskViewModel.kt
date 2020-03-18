@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.lavaira.checklistapp.architecture.AbsentLiveData
+import com.lavaira.checklistapp.architecture.SingleLiveEvent
 import com.lavaira.checklistapp.common.AppSession
 import com.lavaira.checklistapp.common.Constants
 import com.lavaira.checklistapp.data.remote.api.Resource
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.repository.UserRepository
 import com.lavaira.checklistapp.viewmodel.BaseViewModel
+import java.util.*
 import javax.inject.Inject
 
 /****
@@ -22,13 +24,14 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
 
     private val addTaskRequest = MutableLiveData<Task>()
     private val deleteTaskRequest = MutableLiveData<Boolean>()
+    val validationErrorEvent = SingleLiveEvent<Void>()
 
-    val taskTitle = MutableLiveData<String>()
-    val taskDesc = MutableLiveData<String>()
-    val startDate = MutableLiveData<String>()
-    val endDate = MutableLiveData<String>()
-    val status = MutableLiveData<String>()
-    private val nodeId = MutableLiveData<String>()
+    val taskTitle = MutableLiveData<String>("")
+    val taskDesc = MutableLiveData<String>("")
+    val startDate = MutableLiveData<String>("")
+    val endDate = MutableLiveData<String>("")
+    val status = MutableLiveData<String>("")
+    private val nodeId = MutableLiveData<String>("")
     val isInEditMode = MutableLiveData<Boolean>(false)
 
 
@@ -46,6 +49,8 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
             endDate.value = sharedViewModel.selectedTask?.endDate
             status.value = sharedViewModel.selectedTask?.status
             nodeId.value = sharedViewModel.selectedTask?.nodeId
+        }else{
+            nodeId.value = UUID.randomUUID().toString()
         }
     }
 
@@ -69,8 +74,12 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
         }
 
     fun addTask(){
-        addTaskRequest.value = Task(title = taskTitle.value.toString(), description = taskDesc.value.toString(),
-            startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString(), nodeId = nodeId.value.toString())
+        if(validateFields())
+            addTaskRequest.value = Task(title = taskTitle.value.toString(), description = taskDesc.value.toString(),
+                startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString(), nodeId = nodeId.value.toString())
+        else{
+            validationErrorEvent.call()
+        }
     }
 
 
@@ -84,5 +93,11 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
             status.value = Constants.TASK_STATUS.TASK_INPROGRESS
         }else if(status.value == Constants.TASK_STATUS.TASK_INPROGRESS)
             status.value = Constants.TASK_STATUS.TASK_COMPLETED
+    }
+
+
+    private fun validateFields() : Boolean{
+        return (!taskTitle.value.isNullOrEmpty()
+                && !startDate.value.isNullOrEmpty() && !endDate.value.isNullOrEmpty())
     }
 }

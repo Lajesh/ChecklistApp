@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.lavaira.checklistapp.BR
 import com.lavaira.checklistapp.R
 import com.lavaira.checklistapp.architecture.AbsentLiveData
@@ -22,11 +23,11 @@ import javax.inject.Inject
 /****
  * Dashboard viewModel
  * Author: Lajesh Dineshkumar
- * Company: Farabi Technologies
  * Created on: 2020-03-16
  * Modified on: 2020-03-16
  *****/
-class DashboardViewModel @Inject constructor(private val userRepository: UserRepository) : BaseViewModel(){
+class DashboardViewModel @Inject constructor(private val userRepository: UserRepository,
+                                             private val databaseReference: DatabaseReference) : BaseViewModel(){
 
 
     val retreiveTaskRequest = MutableLiveData<String>()
@@ -69,6 +70,24 @@ class DashboardViewModel @Inject constructor(private val userRepository: UserRep
 
     fun retrieveTasks() {
         retreiveTaskRequest.value = AppSession.user?.uid
+    }
+
+
+
+    fun syncDataWithFirebaseDB(tasks: ArrayList<Task>){
+        databaseReference.child("Users")
+            .child(AppSession.user?.uid.toString())
+            .child("Tasks").removeValue()
+        for (task in tasks){
+            synchronized(this){
+                databaseReference.child("Users")
+                    .child(AppSession.user?.uid.toString())
+                    .child("Tasks")
+                    .child(task.nodeId.toString()).setValue(Task(id = task.id, title = task.title, description = task.description,
+                        startDate = task.startDate, endDate = task.endDate, status = task.status))
+            }
+
+        }
     }
 
 }

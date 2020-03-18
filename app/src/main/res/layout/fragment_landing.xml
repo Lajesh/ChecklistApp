@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ivBgImage"
-            android:layout_margin="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="@string/landing_screen_title"
             android:textSize="@dimen/_22ssp"
             android:textStyle="bold" />
@@ -64,7 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSubtitle"
-            android:layout_margin="@dimen/_15sdp">
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

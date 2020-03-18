@@ -34,6 +34,7 @@ class PreLoginActivity : BaseActivity<EmptyViewModel, ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         if(sharedPreferences[SharedPrefConstants.SHARED_PREF_KEY_LOGGED_IN]!!) {
+            this.finish()
             val dashboardIntent = Intent(this, DashboardActivity::class.java)
             startActivity(dashboardIntent)
 

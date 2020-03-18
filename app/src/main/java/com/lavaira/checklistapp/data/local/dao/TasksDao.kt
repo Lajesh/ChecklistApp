@@ -33,6 +33,10 @@ interface TasksDao {
     fun getTasks(): LiveData<List<Task>>
 
 
+    @Query("UPDATE tasks_table SET title=:title, description=:desc, startdate=:startDate, endDate=:endDate, status=:status WHERE nodeId=:nodeId")
+    fun updateTask(title: String, desc: String, startDate: String, endDate: String, status: String, nodeId: String)
+
+
     @Query("DELETE FROM tasks_table WHERE nodeId =:node")
     fun deleteTask(node: String)
 

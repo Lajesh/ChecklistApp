@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -90,19 +91,20 @@ SubscriptionContract{
 
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
+
+        viewModel.validationErrorEvent.observe(this, Observer {
+            Toast.makeText(activity, "Title, Startdate and End date are mandatory", Toast.LENGTH_SHORT).show()
+        })
+
         viewModel.addTaskResponse.observe(this, Observer {
             when {
                 it.status.isLoading() -> {
                     viewModel.loadingStatus.value = true
                 }
-                it.status.isSuccessful() -> {
+                else->{
                     viewModel.loadingStatus.value = false
                     KBus.post(EventMessage(""))
                     dismiss()
-                }
-                it.status.isError() -> {
-                    viewModel.loadingStatus.value = false
-                    viewModel.serviceErrorEvent.value = it.errorMessage
                 }
             }
 
@@ -114,16 +116,12 @@ SubscriptionContract{
             when {
                 it.status.isLoading() -> {
                     viewModel.loadingStatus.value = true
-                }
-                it.status.isSuccessful() -> {
+                }else ->{
                     viewModel.loadingStatus.value = false
                     KBus.post(EventMessage(""))
                     dismiss()
                 }
-                it.status.isError() -> {
-                    viewModel.loadingStatus.value = false
-                    viewModel.serviceErrorEvent.value = it.errorMessage
-                }
+
             }
 
 

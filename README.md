@@ -1,13 +1,12 @@
-# NewYork Times Android Application in Kotlin
+# TODO Android Application in Kotlin
 
 # Highlights
 
 1. MVVM Architectural pattern
 2. Kotlin
-3. Unit test demonstration using JUnit, Mockito and PowerMockito
-4. Static code analysis report using Sonarqube
-5. Gradle scripts for running sonarqube static code analysis, code coverage, etc.
-6. More than 80% coverage for business logic
+3. Firebase authentication
+4. Firebase realtime database
+5. Offline storage
 
 
 The application has been designed using **Android Architecture components** and **Data Binding**
@@ -17,12 +16,14 @@ The whole application is built based on the MVVM architectural pattern.
 # Application Architecture
 <img src="/screenshots/arc.png"  alt="Architecture"/>
 
-The main advatage of using MVVM, there is no two way dependency between ViewModel and View unlike MVP. Here the view can observe the datachanges in the viewmodel as we are using LiveData which is lifecycle aware. The viewmodel to view communication is achieved through observer pattern (basically observing the state changes of the data in the viewmodel).
+The main advantage of using MVVM, there is no two way dependency between ViewModel and View unlike MVP. Here the view can observe the datachanges in the viewmodel as we are using LiveData which is lifecycle aware. The viewmodel to view communication is achieved through observer pattern (basically observing the state changes of the data in the viewmodel).
 
 # Screenshots
-<img src="/screenshots/listing.png" width="346" height="615" alt="Home"/> 
-<img src="/screenshots/details.png" width="346" height="615" alt="Home"/>
-<img src="/screenshots/filter.png" width="346" height="615" alt="Home"/>
+<img src="/screenshots/1.png" width="346" height="615" alt="Home"/> 
+<img src="/screenshots/2.png" width="346" height="615" alt="Home"/>
+<img src="/screenshots/3.png" width="346" height="615" alt="Home"/>
+<img src="/screenshots/4.png" width="346" height="615" alt="Home"/>
+<img src="/screenshots/5.png" width="346" height="615" alt="Home"/>
 
 
 # Programming Practices Followed
@@ -35,9 +36,6 @@ f) Repository pattern for Data Layer <br/>
 g) RxJava for Reactive programming pattern <br/>
 
 
-# Code Quality Report
-
-<img src="/screenshots/sonar_report.png"  alt="Sonar"/>
 
 # How to build ?
 
@@ -59,9 +57,9 @@ Before running the sonarqube job, make sure the project version has been updated
 
 ```
             property "sonar.sources", "src/main"
-            property "sonar.projectName", "NYTimesApp" // Name of your project
+            property "sonar.projectName", "ChecklistApplication" // Name of your project
             property "sonar.projectVersion", "1.0.0" // Version of your project
-            property "sonar.projectDescription", "NYTimes Application to list popular Articles"
+            property "sonar.projectDescription", "ChecklistApplication to manage your tasks"
 ```
 
 For running the sonarqube job, type the below command in the terminal. <br/>
