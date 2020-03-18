@@ -59,7 +59,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideDb(context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "checklists-db").build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, "checklists-db").allowMainThreadQueries().build()
     }
 
 

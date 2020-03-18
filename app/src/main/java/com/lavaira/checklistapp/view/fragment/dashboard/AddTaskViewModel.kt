@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.lavaira.checklistapp.architecture.AbsentLiveData
+import com.lavaira.checklistapp.common.AppSession
+import com.lavaira.checklistapp.common.Constants
 import com.lavaira.checklistapp.data.remote.api.Resource
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.repository.UserRepository
@@ -18,17 +20,26 @@ import javax.inject.Inject
  *****/
 class AddTaskViewModel @Inject constructor(private val userRepository: UserRepository) : BaseViewModel() {
 
-    val addTaskRequest = MutableLiveData<Task>()
+    private val addTaskRequest = MutableLiveData<Task>()
+    private val deleteTaskRequest = MutableLiveData<Boolean>()
+
     val taskTitle = MutableLiveData<String>()
     val taskDesc = MutableLiveData<String>()
     val startDate = MutableLiveData<String>()
     val endDate = MutableLiveData<String>()
     val status = MutableLiveData<String>()
-    val nodeId = MutableLiveData<String>()
+    private val nodeId = MutableLiveData<String>()
+    val isInEditMode = MutableLiveData<Boolean>(false)
+
+
+    init {
+        status.value = Constants.TASK_STATUS.TASK_TODO
+    }
 
 
     fun initData(){
         if(sharedViewModel.isEditMode){
+            isInEditMode.value = sharedViewModel.isEditMode
             taskTitle.value = sharedViewModel.selectedTask?.title
             taskDesc.value = sharedViewModel.selectedTask?.description
             startDate.value = sharedViewModel.selectedTask?.startDate
@@ -48,8 +59,30 @@ class AddTaskViewModel @Inject constructor(private val userRepository: UserRepos
             }
         }
 
+    val deleteTaskResponse: LiveData<Resource<Void>> = Transformations
+        .switchMap(deleteTaskRequest){request ->
+            if(null == request)
+                AbsentLiveData.create()
+            else{
+                userRepository.deleteTask(AppSession.user?.uid, nodeId.value.toString())
+            }
+        }
+
     fun addTask(){
         addTaskRequest.value = Task(title = taskTitle.value.toString(), description = taskDesc.value.toString(),
             startDate = startDate.value.toString(), endDate = endDate.value.toString(), status = status.value.toString(), nodeId = nodeId.value.toString())
+    }
+
+
+    fun deleteTask(){
+        deleteTaskRequest.value = true
+    }
+
+
+    fun changeTaskStatus(){
+        if(status.value == Constants.TASK_STATUS.TASK_TODO){
+            status.value = Constants.TASK_STATUS.TASK_INPROGRESS
+        }else if(status.value == Constants.TASK_STATUS.TASK_INPROGRESS)
+            status.value = Constants.TASK_STATUS.TASK_COMPLETED
     }
 }

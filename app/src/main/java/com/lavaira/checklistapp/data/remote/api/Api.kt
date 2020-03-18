@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import com.google.gson.JsonObject
 import com.lavaira.checklistapp.data.remote.model.response.registration.RegistrationResponse
 import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 /****
@@ -24,6 +21,10 @@ interface Api {
 
     @PUT("Users/{userid}/Tasks/{taskId}")
     fun addOrUpdateTask(@Path("userid")userId: String, @Path("taskId") taskId: String, @Body map: HashMap<String, String>) : LiveData<ApiResponse<Task>>
+
+
+    @DELETE("Users/{userid}/Tasks/{taskId}")
+    fun deleteTask(@Path("userid")userId: String, @Path("taskId")taskId: String) : LiveData<ApiResponse<Void>>
 
 
     @GET("Users/{userid}/Tasks.json")

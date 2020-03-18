@@ -32,6 +32,10 @@ interface TasksDao {
     @Query("SELECT * FROM tasks_table")
     fun getTasks(): LiveData<List<Task>>
 
+
+    @Query("DELETE FROM tasks_table WHERE nodeId =:node")
+    fun deleteTask(node: String)
+
     @Query("DELETE FROM tasks_table")
     abstract fun deleteAllTasks()
 }

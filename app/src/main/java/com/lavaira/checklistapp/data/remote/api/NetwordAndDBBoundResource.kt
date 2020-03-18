@@ -97,6 +97,8 @@ abstract class NetwordAndDBBoundResource<ResultType, RequestType>
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
 
 
+
+
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)
 

@@ -44,6 +44,13 @@ SubscriptionContract{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.initData()
+        if(viewModel.isInEditMode.value!!){
+            btnDelete.visibility = View.VISIBLE
+            btnStatus.visibility = View.VISIBLE
+        }else{
+            btnDelete.visibility = View.GONE
+            btnStatus.visibility = View.GONE
+        }
         etStartDate.setOnClickListener {
             val c: Calendar = Calendar.getInstance()
             val month: Int = c.get(Calendar.MONTH)
@@ -52,7 +59,7 @@ SubscriptionContract{
 
             val datePickerDialog =
                 DatePickerDialog(activity as FragmentActivity,
-                    OnDateSetListener { view, year, month, dayOfMonth -> etStartDate.setText("$dayOfMonth/$month/$year") },
+                    OnDateSetListener { view, year, month, dayOfMonth -> etStartDate.setText("$dayOfMonth/${month +1}/$year") },
                     year,
                     month,
                     day
@@ -70,12 +77,12 @@ SubscriptionContract{
 
             val datePickerDialog =
                 DatePickerDialog(activity as FragmentActivity,
-                    OnDateSetListener { view, year, month, dayOfMonth -> etEndDate.setText("$dayOfMonth/$month/$year") },
+                    OnDateSetListener { view, year, month, dayOfMonth -> etEndDate.setText("$dayOfMonth/${month+1}/$year") },
                     year,
                     month,
                     day
                 )
-            datePickerDialog.datePicker.minDate = c.timeInMillis
+            datePickerDialog.datePicker.minDate =c.timeInMillis
             datePickerDialog.show()
         }
 
@@ -84,6 +91,26 @@ SubscriptionContract{
     override fun subscribeNavigationEvent() {
         super.subscribeNavigationEvent()
         viewModel.addTaskResponse.observe(this, Observer {
+            when {
+                it.status.isLoading() -> {
+                    viewModel.loadingStatus.value = true
+                }
+                it.status.isSuccessful() -> {
+                    viewModel.loadingStatus.value = false
+                    KBus.post(EventMessage(""))
+                    dismiss()
+                }
+                it.status.isError() -> {
+                    viewModel.loadingStatus.value = false
+                    viewModel.serviceErrorEvent.value = it.errorMessage
+                }
+            }
+
+
+        })
+
+
+        viewModel.deleteTaskResponse.observe(this, Observer {
             when {
                 it.status.isLoading() -> {
                     viewModel.loadingStatus.value = true

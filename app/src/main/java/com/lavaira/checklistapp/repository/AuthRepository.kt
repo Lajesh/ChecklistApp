@@ -1,6 +1,5 @@
 package com.lavaira.checklistapp.repository
 
-import android.os.Looper
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -11,7 +10,6 @@ import com.lavaira.checklistapp.data.remote.api.ResponseListener
 import com.lavaira.checklistapp.data.remote.api.ResponseStatus
 import com.lavaira.checklistapp.data.remote.model.response.registration.Verification
 import com.lavaira.checklistapp.executors.AppExecutors
-import okhttp3.internal.lockAndWaitNanos
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -195,17 +193,4 @@ class AuthRepository @Inject constructor(
         }
     }
 
-
-    fun getIdToken() : String?{
-        var token : String? = null
-        val result =   firebaseAuth.currentUser?.getIdToken(true)
-        result?.lockAndWaitNanos(1000000000L)
-        android.os.Handler(Looper.getMainLooper()).postDelayed({
-            token = if(result?.isSuccessful!!)
-                result.result?.token
-            else
-                ""
-        }, 2000)
-        return token
-    }
 }

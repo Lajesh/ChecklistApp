@@ -14,6 +14,10 @@ import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.ID
 import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.START_DATE
 import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.STATUS
 import com.lavaira.checklistapp.common.Constants.TASK_ATTRIBUTES.Companion.TITLE
+import com.lavaira.checklistapp.common.Constants.TASK_STATUS.Companion.TASK_COMPLETED
+import com.lavaira.checklistapp.common.Constants.TASK_STATUS.Companion.TASK_EXPIRED
+import com.lavaira.checklistapp.common.Constants.TASK_STATUS.Companion.TASK_INPROGRESS
+import com.lavaira.checklistapp.common.Constants.TASK_STATUS.Companion.TASK_TODO
 
 /****
  * Keep all the common constants here
@@ -37,6 +41,18 @@ object Constants {
             const val FIRST_NAME = "firstname"
             const val LAST_NAME = "lastname"
             const val ADDRESS = "address"
+        }
+    }
+
+
+    @StringDef(TASK_TODO,TASK_INPROGRESS, TASK_COMPLETED, TASK_EXPIRED)
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class TASK_STATUS {
+        companion object{
+            const val TASK_TODO = "TODO"
+            const val TASK_INPROGRESS = "In Progress"
+            const val TASK_COMPLETED = "Completed"
+            const val TASK_EXPIRED = "Expired"
         }
     }
 

@@ -51,10 +51,11 @@ class DashboardFragment : BaseFragment<DashboardViewModel, FragmentDashboardBind
 
         viewModel.retrieveTasksResponse.observe(this, Observer {
 
-            if(it.data != null){
                 viewModel.items.clear()
-                viewModel.items.addAll(it.data as ArrayList)
-            }
+
+                if(null != it.data)
+                    viewModel.items.addAll(it.data as ArrayList)
+
             when {
                 it.status.isLoading() -> {
                     viewModel.loadingStatus.value = true

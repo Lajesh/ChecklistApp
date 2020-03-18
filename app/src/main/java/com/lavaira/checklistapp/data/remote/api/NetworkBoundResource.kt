@@ -37,6 +37,10 @@ abstract class NetworkResource<ResultType> @MainThread constructor() {
                     onFetchFailed()
                     result.setValue(Resource.error(response.error, null, response.errorCode, response.errorDescription))
                 }
+
+                is ApiEmptyResponse -> {
+                    result.setValue(Resource.success(null))
+                }
             }
         }
     }

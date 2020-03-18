@@ -14,6 +14,7 @@ import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import com.lavaira.checklistapp.data.remote.model.response.tasks.TasksResponse
 import com.lavaira.checklistapp.executors.AppExecutors
 import com.lavaira.checklistapp.utils.SafeLet
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -30,6 +31,11 @@ class UserRepository @Inject constructor(
     private val appExecutors: AppExecutors = AppExecutors()
 ) : SafeLet {
 
+
+    /**
+     * Service call to save the User Profile Information
+     * @param registrationRequest: RegistrationRequest
+     */
     fun saveUserProfile(registrationRequest: RegistrationRequest): LiveData<Resource<RegistrationResponse>> {
         return object : NetworkResource<RegistrationResponse>() {
             override fun loadFromNetwork(): LiveData<ApiResponse<RegistrationResponse>> {
@@ -42,10 +48,15 @@ class UserRepository @Inject constructor(
     }
 
 
+    /**
+     * Service call to add or update a task
+     * @param task : Task Details
+     * @param isUpdate: Boolean Flag to indicate edit mode
+     */
     fun addOrUpdateTask(task: Task, isUpdate: Boolean): LiveData<Resource<Task>> {
         return object : NetwordAndDBBoundResource<Task, Task>(appExecutors) {
             override fun saveCallResult(item: Task) {
-                //tasksDao.inserTask(item)
+                // No need to save the information
             }
 
             override fun shouldFetch(data: Task?): Boolean {
@@ -73,6 +84,10 @@ class UserRepository @Inject constructor(
     }
 
 
+    /**
+     * Service call to fetch all the tasks of Users
+     * @param userId: User ID
+     */
     fun retrieveTasks(userId: String?): LiveData<Resource<List<Task>>> {
 
         return object : NetwordAndDBBoundResource<List<Task>, JsonObject>(appExecutors) {
@@ -102,15 +117,64 @@ class UserRepository @Inject constructor(
     }
 
 
+    /**
+     * Service call to delete a particular task
+     * @param userId: User id
+     * @param taskId: Task id to be deleted
+     */
+    fun deleteTask(userid: String?, taskId: String?) : LiveData<Resource<Void>>{
+//        return object : NetworkResource<Void>() {
+//            override fun loadFromNetwork(): LiveData<ApiResponse<Void>> {
+//                return api.deleteTask(
+//                    userid.toString(),
+//                    "$taskId.json"
+//                )
+//            }
+//        }.asLiveData()
+
+
+        return object : NetwordAndDBBoundResource<Void, Void>(appExecutors){
+            override fun saveCallResult(item: Void) {
+                tasksDao.deleteTask(taskId.toString())
+            }
+
+            override fun shouldFetch(data: Void?): Boolean {
+                return true
+            }
+
+            override fun loadFromDb(): LiveData<Void> {
+                tasksDao.deleteTask(taskId.toString())
+                return AbsentLiveData.create()
+            }
+
+            override fun createCall(): LiveData<ApiResponse<Void>> {
+                return api.deleteTask(
+                    userid.toString(),
+                    "$taskId.json"
+                )
+            }
+
+
+        }.asLiveData()
+    }
+
+
+    /**
+     * Method to parse the Tasks response
+     */
     fun parseRetreieveTasksResponse(jsonString: String): List<Task> {
         val tasksList = ArrayList<Task>()
-        val jsonObject = Gson().fromJson(jsonString, JsonObject::class.java)
-        jsonObject.entrySet().iterator().forEach { itm: Map.Entry<String, JsonElement> ->
-            val key = itm.key as String
-            val value = itm.value as JsonObject
-            val task = Gson().fromJson(value.toString(), Task::class.java)
-            task.nodeId = key
-            tasksList.add(task)
+        try {
+            val jsonObject = Gson().fromJson(jsonString, JsonObject::class.java)
+            jsonObject.entrySet().iterator().forEach { itm: Map.Entry<String, JsonElement> ->
+                val key = itm.key as String
+                val value = itm.value as JsonObject
+                val task = Gson().fromJson(value.toString(), Task::class.java)
+                task.nodeId = key
+                tasksList.add(task)
+            }
+        }catch (exc: Exception){
+            Timber.log(1, exc.message)
         }
         return tasksList
     }

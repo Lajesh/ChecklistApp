@@ -5,7 +5,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
+import com.lavaira.checklistapp.R
+import com.lavaira.checklistapp.data.remote.model.response.tasks.Task
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 /****
  * Keep all common binding adapters here
@@ -27,6 +31,41 @@ object BindingAdapters {
                 }
             }
         }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("field_bg")
+    fun setBackground(view: View, task: Task){
+        when (task.status) {
+            Constants.TASK_STATUS.TASK_TODO -> {
+                view.setBackgroundColor(view.context.resources.getColor(R.color.color_grey))
+                return
+            }
+            Constants.TASK_STATUS.TASK_INPROGRESS -> {
+                view.setBackgroundColor(view.context.resources.getColor(R.color.color_orange))
+                return
+            }
+            Constants.TASK_STATUS.TASK_COMPLETED -> {
+                view.setBackgroundColor(view.context.resources.getColor(R.color.color_green))
+                return
+            }
+        }
+
+
+        task.endDate?.let {
+            try{
+                if(SimpleDateFormat("dd/MM/YYYY").parse(it).before(Date())){
+                    if(task.status != Constants.TASK_STATUS.TASK_TODO ||
+                        task.status != Constants.TASK_STATUS.TASK_INPROGRESS || task.status != Constants.TASK_STATUS.TASK_COMPLETED)
+                        view.setBackgroundColor(view.context.resources.getColor(R.color.color_red))
+                }
+            }catch (ex: Exception){
+                Timber.log(1, ex.message)
+            }
+
+        }
+
     }
 
     @JvmStatic
